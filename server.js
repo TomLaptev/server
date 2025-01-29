@@ -1,53 +1,49 @@
-const fs = require("fs");
-const https = require("https");
-const WebSocket = require("ws");
 const express = require("express");
-const path = require("path");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
 
 const app = express();
-const PORT = 4000;
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Разрешает соединение откуда угодно, можно ограничить
+    methods: ["GET", "POST"],
+  },
+});
 
-// Читаем SSL-сертификат и ключ
-const options = {
-  key: fs.readFileSync(path.join(__dirname, "server.key")),
-  cert: fs.readFileSync(path.join(__dirname, "server.crt")),
-};
+const PORT = process.env.PORT || 3000;
 
-// Создаём HTTPS-сервер
-const server = https.createServer(options, app);
+let players = {}; // Храним данные игроков
 
-// Создаём WebSocket-сервер
-const wss = new WebSocket.Server({ server });
+io.on("connection", (socket) => {
+  console.log("Новое подключение:", socket.id);
 
-wss.on("connection", (ws) => {
-  console.log("Новое WebSocket-соединение");
+  socket.on("playerJoin", (playerData) => {
+    players[socket.id] = playerData;
+    console.log("Игрок подключился:", playerData);
 
-  ws.on("message", (message) => {
-    try {
-      const data = JSON.parse(message.toString());
-
-      if (data.type === "playerExit") {
-        console.log(`Игрок вышел: ${data.user?.id || "неизвестный"}`);
-      } else {
-        console.log("Получено сообщение:", data);
-      }
-    } catch (error) {
-      console.warn("Ошибка обработки сообщения:", error);
-    }
+    io.emit("updatePlayers", Object.values(players)); // Рассылаем всем
   });
 
-  ws.on("close", () => {
-    console.log("WebSocket-соединение закрыто");
+  socket.on("playerExit", () => {
+    console.log("Игрок отключился:", players[socket.id]);
+    delete players[socket.id];
+
+    io.emit("updatePlayers", Object.values(players)); // Обновляем список
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Отключение:", socket.id);
+    delete players[socket.id];
+    io.emit("updatePlayers", Object.values(players));
   });
 });
 
-// Раздаём статику (если надо, можно убрать)
-app.use(express.static(path.join(__dirname, "public")));
-
 app.get("/", (req, res) => {
-  res.send("Сервер работает по HTTPS!");
+  res.send("Сервер работает!");
 });
 
 server.listen(PORT, () => {
-  console.log(`Сервер запущен: https://localhost:${PORT}`);
+  console.log(`Сервер запущен на порту ${PORT}`);
 });
