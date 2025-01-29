@@ -12,6 +12,15 @@ const io = new Server(server, {
   },
 });
 
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", 
+    "default-src 'self' https://tictactoe-server.onrender.com; " +
+    "script-src 'self' 'unsafe-inline' https://tictactoe-server.onrender.com; " +
+    "connect-src 'self' https://tictactoe-server.onrender.com ws://localhost:3000 wss://localhost:3000;"
+  );
+  next();
+});
+
 const PORT = process.env.PORT || 3000;
 
 let players = {}; // Храним данные игроков
