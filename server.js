@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
 
   socket.on("playerJoin", (playerData) => {
     players[socket.id] = playerData;
-    console.log("Игрок подключился:", playerData);
+    console.log("Присоединился игрок:", playerData);
 
     io.emit("updatePlayers", Object.values(players)); // Рассылаем всем
   });
@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => {
   res.send("Сервер работает!");
 });
+
 
 server.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
