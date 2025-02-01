@@ -1,3 +1,7 @@
+import { Server } from "socket.io";
+import express from "express";
+import http from "http";
+
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -7,11 +11,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
 	cors: {
-		origin: [
-			'https://yandex.ru',
-			'https://yandex.ru/games',
-			'https://tictactoe-server-wuoa.onrender.com',
-		], // Разрешает соединение откуда угодно, можно ограничить
+		origin: "*", // Разрешает соединение откуда угодно, можно ограничить
 		methods: ['GET', 'POST'],
 	},
 });
