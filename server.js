@@ -62,10 +62,13 @@ io.on('connection', (socket) => {
 	});
 
 	// Отправка приглашения игроку
-	socket.on('invitePlayer', ({ id, user }) => {
-    players[`${user}`].opponent = `${id}`;
-		//const roomId = `room-${socket.id}-${opponentId}`;
-	});
+	socket.on('invitePlayer', ({ opponentId, user }) => {
+    if (players[user]) {
+        players[user].opponent = opponentId;
+    } else {
+        console.error(`Игрок с ID ${user} не найден в списке игроков.`);
+    }
+});
 
 	// if (players[opponentId]) {
 	// 	io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
