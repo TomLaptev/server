@@ -57,8 +57,8 @@ io.on('connection', (socket) => {
 	socket.on('requestPlayers', () => {
 		io.to(socket.id).emit('updatePlayers', Object.values(players));
 
-    const playerList = getOnlinePlayers(); // Функция для получения списка игроков
-   io.emit('updatePlayersList', playerList);
+   // const playerList = getOnlinePlayers(); // Функция для получения списка игроков
+   //io.emit('updatePlayersList', playerList);
 	});
 
 	// Отправка приглашения игроку
