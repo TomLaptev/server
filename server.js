@@ -56,19 +56,19 @@ io.on('connection', (socket) => {
 	// Получение списка игроков
 	socket.on('requestPlayers', () => {
 		io.to(socket.id).emit('updatePlayers', Object.values(players));
-    
+
     const playerList = getOnlinePlayers(); // Функция для получения списка игроков
     socket.emit('updatePlayersList', playerList);
 	});
 
 	// Отправка приглашения игроку
-	socket.on('invitePlayer', ({ opponentId }) => {
-		const roomId = `room-${socket.id}-${opponentId}`;
-	});
+	// socket.on('invitePlayer', ({ opponentId }) => {
+	// 	const roomId = `room-${socket.id}-${opponentId}`;
+	// });
 
-	if (players[opponentId]) {
-		io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
-	}
+	// if (players[opponentId]) {
+	// 	io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
+	// }
 });
 
 app.get('/', (req, res) => {
