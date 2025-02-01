@@ -62,11 +62,15 @@ io.on('connection', (socket) => {
 	});
 
 	// Отправка приглашения игроку
-	socket.on('invitePlayer', ({ opponentId, user }) => {
+  socket.on('invitePlayer', ({ opponentId, user }) => {
+    console.log("Получено приглашение:", { opponentId, user });
+    console.log("Список игроков на сервере:", players);
+    
     if (players[user]) {
         players[user].opponent = opponentId;
+        console.log(`Игроку ${user} назначен соперник ${opponentId}`);
     } else {
-        console.error(`Игрок с ID ${user} не найден в списке игроков.`);
+        console.error(`Игрок с ID ${user} не найден.`);
     }
 });
 
