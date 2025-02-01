@@ -62,10 +62,10 @@ io.on('connection', (socket) => {
 	});
 
 	// Отправка приглашения игроку
-	socket.on('invitePlayer', ({ opponentId, user }) => {
-    players[user].opponent = opponentId;
-		//const roomId = `room-${socket.id}-${opponentId}`;
-	});
+	// socket.on('invitePlayer', ({ opponentId, user }) => {
+  //   players[user].opponent = opponentId;
+	// 	//const roomId = `room-${socket.id}-${opponentId}`;
+	// });
 
 	// if (players[opponentId]) {
 	// 	io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
