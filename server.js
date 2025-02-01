@@ -35,6 +35,12 @@ io.on("connection", (socket) => {
     io.emit("updatePlayers", Object.values(players)); // Рассылаем всем
   });
 
+  socket.on('requestPlayersList', () => {
+    console.log("Запрос на обновление");
+    const playerList = getOnlinePlayers(); // Функция для получения списка игроков
+    io.emit('updatePlayersList', playerList);
+});
+
   socket.on("playerExit", () => {
     console.log("Игрок отключился:", players[socket.id]);
     delete players[socket.id];
@@ -52,6 +58,22 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => {
   res.send("Сервер работает!");
 });
+
+
+// Получение списка игроков
+socket.on("requestPlayers", () => {
+  io.to(socket.id).emit("updatePlayers", Object.values(players));
+});
+
+// Отправка приглашения игроку
+socket.on("invitePlayer", ({ opponentId }) => {
+  const roomId = `room-${socket.id}-${opponentId}`;
+  
+  if (players[opponentId]) {
+      io.to(opponentId).emit("receiveInvite", { opponentId: socket.id, roomId });
+  }
+});
+
 
 
 server.listen(PORT, () => {
