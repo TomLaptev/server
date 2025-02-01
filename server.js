@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
   socket.on('requestPlayersList', () => {
     console.log("Запрос на обновление");
     const playerList = getOnlinePlayers(); // Функция для получения списка игроков
-    io.emit('updatePlayersList', playerList);
+    io.emit('updatePlayersList', Object.values(players));
 });
 
   socket.on("playerExit", () => {
