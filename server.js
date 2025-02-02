@@ -33,7 +33,7 @@ let players = {}; // Храним данные игроков
 io.on('connection', (socket) => {
 	socket.on('playerConnected', ({ yandexId }) => {
 		socket.yandexId = yandexId; // Сохраняем yandexId в сокете
-		players[yandexId] = { socketId: socket.id, opponent: null };
+		players[yandexId] = { socketId: socket.id};
 		console.log(`Игрок с ID ${yandexId} подключен.`);
 	});
 
