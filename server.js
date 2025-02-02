@@ -32,28 +32,36 @@ let players = {}; // Храним данные игроков
 
 io.on('connection', (socket) => {
 	socket.on("playerConnected", ({ yandexId }) => {
+		socket.yandexId = yandexId; // Сохраняем yandexId в сокете
 		players[yandexId] = { socketId: socket.id, opponent: null };
 	console.log(`Игрок с ID ${yandexId} подключен.`);
 });
+
 	socket.on('playerJoin', (playerData) => {
-		players[yandexId] = playerData;
+		const { yandexId } = playerData; // Извлекаем yandexId из playerData
+    players[yandexId] = { ...playerData, socketId: socket.id };
 		console.log('Присоединился игрок:', playerData);
 
 		io.emit('updatePlayers', Object.values(players)); // Рассылаем всем
 	});
 
 	socket.on('playerExit', () => {
-		console.log('Игрок отключился:', players[yandexId]);
-		delete players[yandexId];
+    const yandexId = socket.yandexId;
+    if (yandexId && players[yandexId]) {
+        console.log('Игрок отключился:', players[yandexId]);
+        delete players[yandexId];
+        io.emit('updatePlayers', Object.values(players));
+    }
+});
 
-		io.emit('updatePlayers', Object.values(players)); // Обновляем список
-	});
-
-	socket.on('disconnect', () => {
-		console.log('Отключение:', yandexId);
-		delete players[yandexId];
-		io.emit('updatePlayers', Object.values(players));
-	});
+socket.on('disconnect', () => {
+	const yandexId = socket.yandexId;
+	if (yandexId && players[yandexId]) {
+			console.log('Отключение:', yandexId);
+			delete players[yandexId];
+			io.emit('updatePlayers', Object.values(players));
+	}
+});
 
 	// Получение списка игроков
 	socket.on('requestPlayers', () => {
