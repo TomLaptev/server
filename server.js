@@ -71,9 +71,9 @@ io.on('connection', (socket) => {
     }
 });
 
-	if (players[opponentId]) {
-		io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
-	}
+	// if (players[opponentId]) {
+	// 	io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
+	// }
 });
 
 app.get('/', (req, res) => {
