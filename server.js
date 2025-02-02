@@ -31,31 +31,33 @@ const PORT = process.env.PORT || 3000;
 let players = {}; // Храним данные игроков
 
 io.on('connection', (socket) => {
-	console.log('Новое подключение:', socket.id);
-
+	socket.on("playerConnected", ({ yandexId }) => {
+		players[yandexId] = { socketId: socket.id, opponent: null };
+	console.log(`Игрок с ID ${yandexId} подключен.`);
+});
 	socket.on('playerJoin', (playerData) => {
-		players[socket.id] = playerData;
+		players[yandexId] = playerData;
 		console.log('Присоединился игрок:', playerData);
 
 		io.emit('updatePlayers', Object.values(players)); // Рассылаем всем
 	});
 
 	socket.on('playerExit', () => {
-		console.log('Игрок отключился:', players[socket.id]);
-		delete players[socket.id];
+		console.log('Игрок отключился:', players[yandexId]);
+		delete players[yandexId];
 
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
 
 	socket.on('disconnect', () => {
-		console.log('Отключение:', socket.id);
-		delete players[socket.id];
+		console.log('Отключение:', yandexId);
+		delete players[yandexId];
 		io.emit('updatePlayers', Object.values(players));
 	});
 
 	// Получение списка игроков
 	socket.on('requestPlayers', () => {
-		io.to(socket.id).emit('updatePlayers', Object.values(players));
+		io.to(yandexId).emit('updatePlayers', Object.values(players));
 
    // const playerList = getOnlinePlayers(); // Функция для получения списка игроков
    //io.emit('updatePlayersList', playerList);
@@ -70,9 +72,7 @@ io.on('connection', (socket) => {
     }
 });
 
-	// if (players[opponentId]) {
-	// 	io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
-	// }
+
 });
 
 app.get('/', (req, res) => {
