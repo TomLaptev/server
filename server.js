@@ -65,14 +65,15 @@ io.on('connection', (socket) => {
   socket.on('invitePlayer', ({ opponentId, user }) => {
     if (players[user]) {
         players[user].opponent = opponentId;
+        players[user].roomId = Key();
     } else {
         console.error(`Игрок с ID ${user} не найден в списке игроков.`);
     }
 });
 
-	// if (players[opponentId]) {
-	// 	io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
-	// }
+	if (players[opponentId]) {
+		io.to(opponentId).emit('receiveInvite', { opponentId: socket.id, roomId });
+	}
 });
 
 app.get('/', (req, res) => {
