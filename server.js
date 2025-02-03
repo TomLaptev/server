@@ -66,7 +66,7 @@ io.on('connection', (socket) => {
     if (players[user]) {
         players[user].opponent = opponentId;
         players[user].available = available;
-        //players[user].isYouX = store.isYouX;
+        players[user].isYouX = isYouX;
     } else {
         console.error(`Игрок с ID ${user} не найден в списке игроков.`);
     }
