@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
 	});
 
 	// Отправка приглашения игроку
-  socket.on('invitePlayer', ({available, opponentId, user }) => {
+  socket.on('invitePlayer', ({available, opponentId, user, isYouX }) => {
     if (players[user]) {
         players[user].opponent = opponentId;
         players[user].available = available;
