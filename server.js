@@ -29,6 +29,7 @@ app.use((req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 let players = {}; // Храним данные игроков
+let rooms = {}; // Создание объекта для хранения комнат
 
 io.on('connection', (socket) => {
 	console.log('Новое подключение:', socket.id);
