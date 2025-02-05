@@ -35,7 +35,11 @@ io.on('connection', (socket) => {
 	console.log('Новое подключение:', socket.id);
 
 	socket.on('playerJoin', (playerData) => {
-		players[socket.id] = playerData;
+		if (playerData.id && playerData.name && playerData.rating !== undefined) {
+			players[socket.id] = playerData;
+	} else {
+			console.warn("Неполные данные игрока:", playerData);
+	}
 		console.log('Присоединился игрок:', playerData);
 
 		io.emit('updatePlayers', Object.values(players)); // Рассылаем всем
