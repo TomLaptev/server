@@ -36,13 +36,18 @@ io.on('connection', (socket) => {
 
 	socket.on('playerJoin', (playerData) => {
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
-			players[socket.id] = playerData;
-	} else {
-			console.warn("Неполные данные игрока:", playerData);
-	}
+			if (!players[socket.id]) {
+				players[socket.id] = playerData;
+		}
+		} else {
+			console.warn('Неполные данные игрока:', playerData);
+		}
 		console.log('Присоединился игрок:', playerData);
 
-		io.emit('updatePlayers', Object.values(players)); // Рассылаем всем
+		// Отправляем только корректные данные
+		const validPlayers = Object.values(players).filter(player => player && player.id && player.name);
+		console.log("Игроки для отправки:", Object.values(players));
+		io.emit('updatePlayers', validPlayers);
 	});
 
 	socket.on('playerExit', () => {
