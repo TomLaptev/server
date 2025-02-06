@@ -111,6 +111,19 @@ io.on('connection', (socket) => {
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		}
 	});
+
+	// Обновление комнаты
+	socket.on('refusalPlay', (roomId) => {
+		if ( rooms[socket.id]) {
+			delete rooms[socket.id];
+		}
+		if ( rooms[roomId]) {
+			delete rooms[roomId];
+		}
+		console.log('Приватная комната удалена');
+
+		io.to(roomId).emit('roomUpdate', rooms[roomId]);
+	})
 });
 
 app.get('/', (req, res) => {
