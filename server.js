@@ -55,6 +55,7 @@ io.on('connection', (socket) => {
 		delete players[socket.id];
 		if ( rooms[socket.id]) {
 			delete rooms[socket.id];
+			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		}
 		
 		console.log('Комната "', socket.id, ' "удалена');
@@ -67,6 +68,7 @@ io.on('connection', (socket) => {
 		delete players[socket.id];
 		if ( rooms[socket.id]) {
 			delete rooms[socket.id];
+			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		}
 
     console.log('Комната "', socket.id, ' "удалена');
@@ -86,7 +88,7 @@ io.on('connection', (socket) => {
 	socket.on('createRoom', (roomData) => {
 		const roomId = roomData.id;
 		socket.join(roomId); // Присоединяем создателя комнаты к ней
-		console.log(`Комната ${roomId} создана игроком ${roomData.name}`);
+		console.log(`Приватная комната ${roomId} создана игроком ${roomData.name}`);
 
 		// Можно сохранить данные комнаты, если нужно
 		rooms[roomId] = { ...roomData, players: [socket.id] };
