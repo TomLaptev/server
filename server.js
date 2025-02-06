@@ -30,6 +30,7 @@ const PORT = process.env.PORT || 3000;
 
 let players = {}; // Храним данные игроков
 let rooms = {}; // Создание объекта для хранения комнат
+let privateRoom = {};
 
 io.on('connection', (socket) => {
 	console.log('Новое подключение:', socket.id);
@@ -53,6 +54,8 @@ io.on('connection', (socket) => {
 	socket.on('playerExit', () => {
 		console.log('Игрок отключился:', players[socket.id]);
 		delete players[socket.id];
+		delete rooms[socket.id];
+		console.log('Комната "', socket.id, ' "удалена');
 
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
@@ -60,6 +63,8 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		console.log('Отключение:', socket.id);
 		delete players[socket.id];
+		delete rooms[socket.id];
+    console.log('Комната "', socket.id, ' "удалена');
 		io.emit('updatePlayers', Object.values(players));
 	});
 
@@ -75,6 +80,7 @@ io.on('connection', (socket) => {
 	// Создание комнаты
 	socket.on('createRoom', (roomData) => {
 		const roomId = roomData.id;
+		privateRoom = roomId;
 		socket.join(roomId); // Присоединяем создателя комнаты к ней
 		console.log(`Комната ${roomId} создана игроком ${roomData.name}`);
 
