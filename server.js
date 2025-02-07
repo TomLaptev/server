@@ -107,7 +107,7 @@ io.on('connection', (socket) => {
         players[id].available = available;
         players[opponentSocketId].available = available;
         io.emit("updatePlayers", Object.values(players)); // Отправляем обновленный список
-				console.log("updatePlayersStatus")
+				console.log("updatePlayers")
     }
 });
 
