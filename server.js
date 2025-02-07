@@ -102,8 +102,8 @@ io.on('connection', (socket) => {
 		);
 	});
 
-	socket.on("updatePlayerStatus", ({ id, opponentSocketId,available }) => {
-    if (players[id]) {
+	socket.on("updatePlayersStatus", ({ id, opponentSocketId, available }) => {
+    if (players[opponentSocketId]) {
         players[id].available = available;
         players[opponentSocketId].available = available;
         io.emit("updatePlayers", Object.values(players)); // Отправляем обновленный список
