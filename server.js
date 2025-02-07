@@ -102,6 +102,14 @@ io.on('connection', (socket) => {
 		);
 	});
 
+	socket.on("updatePlayerStatus", ({ id, opponentSocketId,available }) => {
+    if (players[id]) {
+        players[id].available = available;
+        players[opponentSocketId].available = available;
+        io.emit("updatePlayers", Object.values(players)); // Отправляем обновленный список
+    }
+});
+
 	// Присоединение к комнате
 	socket.on('joinRoom', (roomId) => {
 		socket.join(roomId);
