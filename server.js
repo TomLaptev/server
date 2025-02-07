@@ -117,6 +117,7 @@ io.on('connection', (socket) => {
 	// Отправка приглашения игроку
 	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId }) => {
 		io.to(opponentSocketId).emit('roomInvitation', { roomId });
+		io.to(roomId).emit('roomUpdate', rooms[roomId])
 		console.log(
 			`Приглашение отправлено игроку ${opponentSocketId} в комнату ${roomId}`
 		);
