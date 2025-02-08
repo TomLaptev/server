@@ -75,10 +75,11 @@ io.on('connection', (socket) => {
 		io.emit('updatePlayers', validPlayers);
 
 		if (rooms) {
+			console.log(12345);
 			for (const id in rooms) {
 				console.log('Застрявшая комната:', rooms[id]);
 			}
-		} else console.log('Застрявших комнат нет')
+		} else console.log('Застрявших комнат нет');
 	});
 
 	socket.on('playerExit', () => {
