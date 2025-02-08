@@ -149,6 +149,7 @@ io.on('connection', (socket) => {
 		if (rooms[roomId]) {
 			rooms[roomId].players.push(socket.id);
 			console.log(`Игрок ${socket.id} присоединился к комнате ${roomId}`);
+			console.log(`Игроки:  ${players}`);
 
 			// Уведомляем всех участников комнаты
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
