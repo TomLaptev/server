@@ -35,6 +35,7 @@ const PLAYER_TIMEOUT = 120000; // 2 минуты
 function removeInactivePlayers() {
 	const now = Date.now();
 	for (const id in players) {
+		console.log(`lastUpdate: ${players[id].lastActivity}`);
 		if (now - players[id].lastActivity > PLAYER_TIMEOUT) {
 			console.log(`Удаляю неактивного игрока: ${id}`);
 			delete players[id];
@@ -50,7 +51,7 @@ function removeInactivePlayers() {
 	// io.emit("updatePlayers", Object.values(players));
 }
 
-// Запускаем очистку каждые 30 секунд
+// Запускаем очистку каждые 300 секунд
 setInterval(removeInactivePlayers, 300000);
 
 
