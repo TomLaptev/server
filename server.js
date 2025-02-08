@@ -75,7 +75,8 @@ io.on('connection', (socket) => {
 		io.emit('updatePlayers', validPlayers);
 
 		if (rooms) {
-			console.log(12345);
+			console.log(rooms);
+			console.log(123);
 			for (const id in rooms) {
 				console.log('Застрявшая комната:', rooms[id]);
 			}
