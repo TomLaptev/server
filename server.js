@@ -150,13 +150,14 @@ io.on('connection', (socket) => {
 	socket.on('refusalPlay', (roomId) => {
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
+			console.log('Приватная комната игрока-Б удалена');
 		}
 		if (rooms[roomId]) {
 			delete rooms[roomId];
+			console.log('Приватная комната игрока-А удалена');
 		}
-		console.log('Приватная комната удалена');
 
-		//io.to(roomId).emit('roomDelete');
+		io.to(roomId).emit('roomDelete');
 	});
 });
 
