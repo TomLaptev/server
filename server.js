@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
 		);
 		console.log('Игроки для отправки:', Object.values(players));
 		io.emit('updatePlayers', validPlayers);
-		io.to(players[socket.id]).emit('dataSent', socket.id);
+		io.to(socket.id).emit('dataSent', socket.id);
 
 	});
 
