@@ -172,7 +172,9 @@ io.on('connection', (socket) => {
 });
 
 app.get('/', (req, res) => {
-	res.send('Сервер работает!');
+	res.send('Сервер работает!', players);
+	res.send('Сервер работает!', rooms);
+
 });
 server.listen(PORT, () => {
 	console.log(`Сервер запущен на порту ${PORT}`);
