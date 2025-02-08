@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
 		} else {
 			console.warn('Неполные данные игрока:', playerData);
 		}
-		console.log('Присоединился игрок:', playerData);
+		console.log('Присоединился игрок:', playerData.name, ": ", playerData.id);
 
 		// Отправляем только корректные данные
 		const validPlayers = Object.values(players).filter(
@@ -73,6 +73,7 @@ io.on('connection', (socket) => {
 		);
 		console.log('Игроки для отправки:', Object.values(players));
 		io.emit('updatePlayers', validPlayers);
+		io.to(players[socket.id]).emit('dataReceived');
 
 	});
 
