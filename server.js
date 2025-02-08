@@ -34,19 +34,19 @@ const PLAYER_TIMEOUT = 120000; // 2 минуты
 
 function removeInactivePlayers() {
 	const now = Date.now();
-	for (const id in players) {
-		console.log(`lastUpdate: ${players[id].lastActivity}`);
-		if (now - players[id].lastActivity > PLAYER_TIMEOUT) {
-			console.log(`Удаляю неактивного игрока: ${id}`);
-			delete players[id];
-		}
-	}
-	for (const id in rooms) {
-		if (now - rooms[id].lastActivity > PLAYER_TIMEOUT) {
-			console.log(`Удаляю неактивную комнату: ${id}`);
-			delete rooms[id];
-		}
-	}
+	// for (const id in players) {
+	// 	console.log(`lastUpdate: ${players[id].lastActivity}`);
+	// 	if (now - players[id].lastActivity > PLAYER_TIMEOUT) {
+	// 		console.log(`Удаляю неактивного игрока: ${id}`);
+	// 		delete players[id];
+	// 	}
+	// }
+	// for (const id in rooms) {
+	// 	if (now - rooms[id].lastActivity > PLAYER_TIMEOUT) {
+	// 		console.log(`Удаляю неактивную комнату: ${id}`);
+	// 		delete rooms[id];
+	// 	}
+	// }
 	console.log(now);
 	// io.emit("updatePlayers", Object.values(players));
 }
@@ -79,26 +79,30 @@ io.on('connection', (socket) => {
 
 	socket.on('playerExit', () => {
 		console.log('Игрок отключился:', players[socket.id]);
-		delete players[socket.id];
-		delete players;
 		if (rooms[socket.id]) {
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			delete rooms[socket.id];
 			console.log('Комната "', socket.id, ' "удалена');
 		}
+
+		delete players[socket.id];
+		delete players;
+
 		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
 
 	socket.on('disconnect', () => {
-		console.log('Отключение:', socket.id);
-		delete players[socket.id];
-		delete players;
+		console.log('Разъединение:', socket.id);
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			console.log('Комната "', socket.id, ' "удалена');
 		}
+
+		delete players[socket.id];
+		delete players;
+
 		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players));
 	});
