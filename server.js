@@ -26,6 +26,10 @@ app.use((req, res, next) => {
 	next();
 });
 
+const PORT = process.env.PORT || 3000;
+let players = {}; // Храним данные игроков
+let rooms = {}; // Создание объекта для хранения комнат
+
 const PLAYER_TIMEOUT = 120000; // 2 минуты
 
 function removeInactivePlayers() {
@@ -36,16 +40,19 @@ function removeInactivePlayers() {
 			delete players[id];
 		}
 	}
+	for (const id in rooms) {
+		if (now - rooms[id].lastActivity > PLAYER_TIMEOUT) {
+			console.log(`Удаляю неактивную комнату: ${id}`);
+			delete rooms[id];
+		}
+	}
 	// io.emit("updatePlayers", Object.values(players));
 }
 
 // Запускаем очистку каждые 30 секунд
 setInterval(removeInactivePlayers, 30000);
 
-const PORT = process.env.PORT || 3000;
 
-let players = {}; // Храним данные игроков
-let rooms = {}; // Создание объекта для хранения комнат
 
 io.on('connection', (socket) => {
 	console.log('Новое подключение:', socket.id);
