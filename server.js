@@ -46,11 +46,12 @@ function removeInactivePlayers() {
 			delete rooms[id];
 		}
 	}
+	console.log(now);
 	// io.emit("updatePlayers", Object.values(players));
 }
 
 // Запускаем очистку каждые 30 секунд
-setInterval(removeInactivePlayers, 30000);
+setInterval(removeInactivePlayers(), 30000);
 
 
 
