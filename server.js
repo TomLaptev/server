@@ -54,8 +54,6 @@ function removeInactivePlayers() {
 // Запускаем очистку каждые 300 секунд
 setInterval(removeInactivePlayers, 300000);
 
-
-
 io.on('connection', (socket) => {
 	console.log('Новое подключение:', socket.id);
 
@@ -73,7 +71,7 @@ io.on('connection', (socket) => {
 		const validPlayers = Object.values(players).filter(
 			(player) => player && player.id && player.name
 		);
-		console.log("Игроки для отправки:", Object.values(players));
+		console.log('Игроки для отправки:', Object.values(players));
 		io.emit('updatePlayers', validPlayers);
 	});
 
@@ -86,7 +84,9 @@ io.on('connection', (socket) => {
 		}
 
 		delete players[socket.id];
-		//delete players;
+		for (const id in players) {
+			delete players[id];
+		}
 
 		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
@@ -100,8 +100,7 @@ io.on('connection', (socket) => {
 			console.log('Комната "', socket.id, ' "удалена');
 		}
 
-		delete players[socket.id];
-		//delete players;
+		delete players[socket.id];		
 
 		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players));
@@ -154,7 +153,6 @@ io.on('connection', (socket) => {
 		if (rooms[roomId]) {
 			rooms[roomId].players.push(socket.id);
 			console.log(`Игрок ${socket.id} присоединился к комнате ${roomId}`);
-			
 
 			// Уведомляем всех участников комнаты
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
@@ -164,7 +162,7 @@ io.on('connection', (socket) => {
 	// Обновление комнаты
 	socket.on('refusalPlay', (roomId) => {
 		if (rooms[socket.id]) {
-			io.to(roomId).emit('roomDelete', rooms[socket.id] );
+			io.to(roomId).emit('roomDelete', rooms[socket.id]);
 			delete rooms[socket.id];
 			console.log('Приватная комната игрока-А удалена');
 		}
@@ -173,13 +171,11 @@ io.on('connection', (socket) => {
 			delete rooms[roomId];
 			console.log('Приватная комната игрока-Б удалена');
 		}
-
 	});
 });
 
 app.get('/', (req, res) => {
 	res.send('Сервер работает!');
-
 });
 server.listen(PORT, () => {
 	console.log(`Сервер запущен на порту ${PORT}`);
