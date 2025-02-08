@@ -82,11 +82,10 @@ io.on('connection', (socket) => {
 		delete players[socket.id];
 		delete players;
 		if (rooms[socket.id]) {
-			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
+			delete rooms[socket.id];
 			console.log('Комната "', socket.id, ' "удалена');
 		}
-
 		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
@@ -94,6 +93,7 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		console.log('Отключение:', socket.id);
 		delete players[socket.id];
+		delete players;
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
