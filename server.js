@@ -29,20 +29,18 @@ app.use((req, res, next) => {
 const PLAYER_TIMEOUT = 120000; // 2 минуты
 
 function removeInactivePlayers() {
-    const now = Date.now();
-    for (const id in players) {
-        if (now - players[id].lastActivity > PLAYER_TIMEOUT) {
-            console.log(`Удаляю неактивного игрока: ${id}`);
-            delete players[id];
-        }
-    }
-   // io.emit("updatePlayers", Object.values(players));
+	const now = Date.now();
+	for (const id in players) {
+		if (now - players[id].lastActivity > PLAYER_TIMEOUT) {
+			console.log(`Удаляю неактивного игрока: ${id}`);
+			delete players[id];
+		}
+	}
+	// io.emit("updatePlayers", Object.values(players));
 }
 
 // Запускаем очистку каждые 30 секунд
 //setInterval(removeInactivePlayers, 30000);
-
-
 
 const PORT = process.env.PORT || 3000;
 
@@ -56,14 +54,16 @@ io.on('connection', (socket) => {
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
 			if (!players[socket.id]) {
 				players[socket.id] = playerData;
-		}
+			}
 		} else {
 			console.warn('Неполные данные игрока:', playerData);
 		}
 		console.log('Присоединился игрок:', playerData);
 
 		// Отправляем только корректные данные
-		const validPlayers = Object.values(players).filter(player => player && player.id && player.name);
+		const validPlayers = Object.values(players).filter(
+			(player) => player && player.id && player.name
+		);
 		//console.log("Игроки для отправки:", Object.values(players));
 		io.emit('updatePlayers', validPlayers);
 	});
@@ -71,11 +71,11 @@ io.on('connection', (socket) => {
 	socket.on('playerExit', () => {
 		console.log('Игрок отключился:', players[socket.id]);
 		delete players[socket.id];
-		if ( rooms[socket.id]) {
+		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		}
-		
+
 		console.log('Комната "', socket.id, ' "удалена');
 
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
@@ -84,12 +84,12 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		console.log('Отключение:', socket.id);
 		delete players[socket.id];
-		if ( rooms[socket.id]) {
+		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		}
 
-    console.log('Комната "', socket.id, ' "удалена');
+		console.log('Комната "', socket.id, ' "удалена');
 		io.emit('updatePlayers', Object.values(players));
 	});
 
@@ -108,7 +108,7 @@ io.on('connection', (socket) => {
 		socket.join(roomId); // Присоединяем создателя комнаты к ней
 		console.log(`Приватная комната ${roomId} создана игроком ${roomData.name}`);
 
-		io.to(roomId).emit('roomUpdate', rooms[roomId])
+		io.to(roomId).emit('roomUpdate', rooms[roomId]);
 
 		// Можно сохранить данные комнаты, если нужно
 		rooms[roomId] = { ...roomData, players: [socket.id] };
@@ -117,19 +117,22 @@ io.on('connection', (socket) => {
 	// Отправка приглашения игроку
 	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId }) => {
 		io.to(opponentSocketId).emit('roomInvitation', { roomId });
-		io.to(roomId).emit('roomUpdate', rooms[roomId])
+		io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		console.log(
 			`Приглашение отправлено игроку ${opponentSocketId} в комнату ${roomId}`
 		);
 	});
 
-	socket.on("updatePlayersStatus", ({ id, opponentSocketId, available }) => {
-    if (players[opponentSocketId]) {
+	socket.on('updatePlayersStatus', ({ id, opponentSocketId, available }) => {
+		if (players[opponentSocketId]) {
 			players[opponentSocketId].available = available;
-    }
+		}
+		if (players[id]) {
 			players[id].available = available;
-        io.emit("updatePlayers", Object.values(players)); // Отправляем обновленный список
-});
+		}
+
+		io.emit('updatePlayers', Object.values(players)); // Отправляем обновленный список
+	});
 
 	// Присоединение к комнате
 	socket.on('joinRoom', (roomId) => {
@@ -145,16 +148,16 @@ io.on('connection', (socket) => {
 
 	// Обновление комнаты
 	socket.on('refusalPlay', (roomId) => {
-		if ( rooms[socket.id]) {
+		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 		}
-		if ( rooms[roomId]) {
+		if (rooms[roomId]) {
 			delete rooms[roomId];
 		}
 		console.log('Приватная комната удалена');
 
 		//io.to(roomId).emit('roomDelete');
-	})
+	});
 });
 
 app.get('/', (req, res) => {
