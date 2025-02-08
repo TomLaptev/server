@@ -51,7 +51,7 @@ function removeInactivePlayers() {
 }
 
 // Запускаем очистку каждые 30 секунд
-setInterval(removeInactivePlayers, 30000);
+setInterval(removeInactivePlayers, 300000);
 
 
 
@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
 			(player) => player && player.id && player.name
 		);
 		console.log("Игроки для отправки:", Object.values(players));
-		console.log(`Игроки: `, Object.values(players).name);
+		console.log(`Игроки: `, Object.values(players.name));
 		io.emit('updatePlayers', validPlayers);
 	});
 
