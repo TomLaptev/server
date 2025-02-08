@@ -73,7 +73,6 @@ io.on('connection', (socket) => {
 			(player) => player && player.id && player.name
 		);
 		console.log("Игроки для отправки:", Object.values(players));
-		console.log(`Игроки: `, Object.values(players.name));
 		io.emit('updatePlayers', validPlayers);
 	});
 
