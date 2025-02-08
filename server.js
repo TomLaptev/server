@@ -73,6 +73,12 @@ io.on('connection', (socket) => {
 		);
 		console.log('Игроки для отправки:', Object.values(players));
 		io.emit('updatePlayers', validPlayers);
+
+		if (rooms) {
+			for (const id in rooms) {
+				console.log('Застрявшая комната:', rooms[id]);
+			}
+		} else console.log('Застрявших комнат нет')
 	});
 
 	socket.on('playerExit', () => {
@@ -82,7 +88,6 @@ io.on('connection', (socket) => {
 			delete rooms[socket.id];
 			console.log('Комната "', socket.id, ' "удалена');
 		}
-
 		delete players[socket.id];
 		for (const id in players) {
 			delete players[id];
@@ -100,7 +105,7 @@ io.on('connection', (socket) => {
 			console.log('Комната "', socket.id, ' "удалена');
 		}
 
-		delete players[socket.id];		
+		delete players[socket.id];
 
 		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players));
