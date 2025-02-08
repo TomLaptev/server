@@ -79,6 +79,7 @@ io.on('connection', (socket) => {
 	socket.on('playerExit', () => {
 		console.log('Игрок отключился:', players[socket.id]);
 		delete players[socket.id];
+		delete players;
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
