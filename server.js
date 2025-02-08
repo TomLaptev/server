@@ -36,7 +36,7 @@ function removeInactivePlayers() {
             delete players[id];
         }
     }
-    io.emit("updatePlayers", Object.values(players));
+   // io.emit("updatePlayers", Object.values(players));
 }
 
 // Запускаем очистку каждые 30 секунд
@@ -125,11 +125,10 @@ io.on('connection', (socket) => {
 
 	socket.on("updatePlayersStatus", ({ id, opponentSocketId, available }) => {
     if (players[opponentSocketId]) {
-        players[id].available = available;
-        players[opponentSocketId].available = available;
-        io.emit("updatePlayers", Object.values(players)); // Отправляем обновленный список
-				console.log("updatePlayers")
+			players[opponentSocketId].available = available;
     }
+			players[id].available = available;
+        io.emit("updatePlayers", Object.values(players)); // Отправляем обновленный список
 });
 
 	// Присоединение к комнате
@@ -154,7 +153,7 @@ io.on('connection', (socket) => {
 		}
 		console.log('Приватная комната удалена');
 
-		io.to(roomId).emit('roomUpdate', rooms[roomId]);
+		//io.to(roomId).emit('roomDelete');
 	})
 });
 
