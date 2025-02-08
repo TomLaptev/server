@@ -51,7 +51,7 @@ function removeInactivePlayers() {
 }
 
 // Запускаем очистку каждые 30 секунд
-setInterval(removeInactivePlayers(), 30000);
+setInterval(removeInactivePlayers, 30000);
 
 
 
