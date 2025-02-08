@@ -83,10 +83,10 @@ io.on('connection', (socket) => {
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
+			console.log('Комната "', socket.id, ' "удалена');
 		}
 
-		console.log('Комната "', socket.id, ' "удалена');
-
+		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
 
@@ -96,9 +96,9 @@ io.on('connection', (socket) => {
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
+			console.log('Комната "', socket.id, ' "удалена');
 		}
-
-		console.log('Комната "', socket.id, ' "удалена');
+		console.log('Игрок "', socket.id, ' "удален');
 		io.emit('updatePlayers', Object.values(players));
 	});
 
@@ -172,8 +172,7 @@ io.on('connection', (socket) => {
 });
 
 app.get('/', (req, res) => {
-	res.send('Сервер работает!', players);
-	res.send('Сервер работает!', rooms);
+	res.send('Сервер работает!');
 
 });
 server.listen(PORT, () => {
