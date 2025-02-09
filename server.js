@@ -55,7 +55,7 @@ function removeInactivePlayers() {
 setInterval(removeInactivePlayers, 300000);
 
 io.on('connection', (socket) => {
-	console.log('Новое подключение:', players[socket.id].name);
+	console.log('Новое подключение:', socket.id);
 
 	socket.on('playerJoin', (playerData) => {
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
