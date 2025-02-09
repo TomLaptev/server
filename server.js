@@ -55,7 +55,7 @@ function removeInactivePlayers() {
 setInterval(removeInactivePlayers, 300000);
 
 io.on('connection', (socket) => {
-	console.log('Новое подключение:', socket.id);
+	console.log('Новое подключение:', players[socket.id].name);
 
 	socket.on('playerJoin', (playerData) => {
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
 		const validPlayers = Object.values(players).filter(
 			(player) => player && player.id && player.name
 		);
-		console.log('Игроки для отправки:', Object.values(players).forEach(player => console.log(`Игрок: ${player.name}`)));
+		console.log('Игроки для отправки:', Object.values(players).forEach(player =>`Игрок: ${player.name}`));
 		io.to(socket.id).emit('dataSent', socket.id);
 		io.emit('updatePlayers', validPlayers);
 
@@ -153,7 +153,7 @@ io.on('connection', (socket) => {
 		socket.join(roomId);
 		if (rooms[roomId]) {
 			rooms[roomId].players.push(socket.id);
-			console.log(`Игрок ${socket.id} присоединился к комнате ${roomId}`);
+			console.log(`Игрок ${players[socket.id].name} присоединился к комнате ${roomId}`);
 
 			// Уведомляем всех участников комнаты
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
