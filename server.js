@@ -55,8 +55,7 @@ function removeInactivePlayers() {
 setInterval(removeInactivePlayers, 300000);
 
 io.on('connection', (socket) => {
-	console.log('Новое подключение:', socket.id, socket.name);
-	console.log('Игрок:', socket.name);
+	console.log('Новое подключение:', socket.id);
 
 	socket.on('playerJoin', (playerData) => {
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
@@ -72,39 +71,39 @@ io.on('connection', (socket) => {
 		const validPlayers = Object.values(players).filter(
 			(player) => player && player.id && player.name
 		);
-		console.log('Игроки для отправки:', Object.values(players));
+		console.log('Игроки для отправки:', Object.values(players).forEach(player => console.log(`Игрок: ${player.name}`)));
 		io.to(socket.id).emit('dataSent', socket.id);
 		io.emit('updatePlayers', validPlayers);
 
 	});
 
 	socket.on('playerExit', () => {
-		console.log('Игрок отключился:', players[socket.id]);
+		console.log('Игрок отключился:', players[socket.id].name);
 		if (rooms[socket.id]) {
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			delete rooms[socket.id];
-			console.log('Комната "', socket.id, ' "удалена');
+			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
 		delete players[socket.id];
 		// for (const id in players) {
 		// 	delete players[id];
 		// }
 
-		console.log('Игрок "', socket.id, ' "удален');
+		console.log('Игрок "', players[socket.id].name, ' "удален');
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
 
 	socket.on('disconnect', () => {
-		console.log('Разъединение:', socket.id);
+		console.log('Разъединение:',  players[socket.id].name, ' - ',socket.id);
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
-			console.log('Комната "', socket.id, ' "удалена');
+			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
 
 		delete players[socket.id];
 
-		console.log('Игрок "', socket.id, ' "удален');
+		console.log('Игрок "', players[socket.id].name, ' "удален');
 		io.emit('updatePlayers', Object.values(players));
 	});
 
@@ -130,11 +129,11 @@ io.on('connection', (socket) => {
 	});
 
 	// Отправка приглашения игроку
-	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId }) => {
+	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId, name }) => {
 		io.to(opponentSocketId).emit('roomInvitation', { roomId });
 		io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		console.log(
-			`Приглашение отправлено игроку ${opponentSocketId} в комнату ${roomId}`
+			`Приглашение отправлено игроку ${name} в комнату ${roomId}`
 		);
 	});
 
