@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
 		const validPlayers = Object.values(players).filter(
 			(player) => player && player.id && player.name
 		);
-		console.log('Игроки для отправки:', Object.values(players).forEach(player =>`Игрок: ${player.name}`));
+		//console.log('Игроки для отправки:', Object.values(players).forEach(player =>`Игрок: ${player.name}`));
 		io.to(socket.id).emit('dataSent', socket.id);
 		io.emit('updatePlayers', validPlayers);
 
