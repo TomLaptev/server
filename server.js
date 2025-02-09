@@ -122,7 +122,7 @@ io.on('connection', (socket) => {
 		socket.join(roomId); // Присоединяем создателя комнаты к ней
 		console.log(`Приватная комната ${roomId} создана игроком ${roomData.name}`);
 
-		io.to(roomId).emit('roomUpdate', rooms[roomId]);
+		//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 
 		// Можно сохранить данные комнаты, если нужно
 		rooms[roomId] = { ...roomData, players: [socket.id] };
@@ -131,7 +131,7 @@ io.on('connection', (socket) => {
 	// Отправка приглашения игроку
 	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId, name }) => {
 		io.to(opponentSocketId).emit('roomInvitation', { roomId });
-		io.to(roomId).emit('roomUpdate', rooms[roomId]);
+		//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		console.log(
 			`Приглашение отправлено игроку ${name} в комнату ${roomId}`
 		);
