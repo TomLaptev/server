@@ -84,12 +84,12 @@ io.on('connection', (socket) => {
 			delete rooms[socket.id];
 			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
+		console.log('Игрок "', players[socket.id].name, ' "удален');
 		delete players[socket.id];
 		// for (const id in players) {
 		// 	delete players[id];
 		// }
 
-		console.log('Игрок "', players[socket.id].name, ' "удален');
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
 
@@ -101,9 +101,9 @@ io.on('connection', (socket) => {
 			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
 
+		console.log('Игрок "', players[socket.id].name, ' "удален');
 		delete players[socket.id];
 
-		console.log('Игрок "', players[socket.id].name, ' "удален');
 		io.emit('updatePlayers', Object.values(players));
 	});
 
