@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
 		// 	delete players[id];
 		// }
 
-		io.emit('updatePlayers', Object.values(players)); // Обновляем список
+		//io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
 
 	socket.on('disconnect', () => {
@@ -108,8 +108,8 @@ io.on('connection', (socket) => {
 	});
 
 	// Получение списка игроков
-	socket.on('requestPlayers', () => {
-		io.emit('updatePlayers', Object.values(players));
+	// socket.on('requestPlayers', () => {
+	// 	io.emit('updatePlayers', Object.values(players));
 		//io.to(socket.id).emit('updatePlayers', Object.values(players));
 
 		// const playerList = getOnlinePlayers(); // Функция для получения списка игроков
@@ -145,7 +145,7 @@ io.on('connection', (socket) => {
 			players[id].available = available;
 		}
 
-		io.emit('updatePlayers', Object.values(players)); // Отправляем обновленный список
+		//io.emit('updatePlayers', Object.values(players)); // Отправляем обновленный список
 	});
 
 	// Присоединение к комнате
