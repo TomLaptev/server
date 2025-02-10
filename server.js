@@ -1,7 +1,3 @@
-//import { Server } from "socket.io";
-//import express from "express";
-//import http from "http";
-
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -34,21 +30,7 @@ const PLAYER_TIMEOUT = 120000; // 2 минуты
 
 function removeInactivePlayers() {
 	const now = Date.now();
-	// for (const id in players) {
-	// 	console.log(`lastUpdate: ${players[id].lastActivity}`);
-	// 	if (now - players[id].lastActivity > PLAYER_TIMEOUT) {
-	// 		console.log(`Удаляю неактивного игрока: ${id}`);
-	// 		delete players[id];
-	// 	}
-	// }
-	// for (const id in rooms) {
-	// 	if (now - rooms[id].lastActivity > PLAYER_TIMEOUT) {
-	// 		console.log(`Удаляю неактивную комнату: ${id}`);
-	// 		delete rooms[id];
-	// 	}
-	// }
 	console.log(now);
-	// io.emit("updatePlayers", Object.values(players));
 }
 
 // Запускаем очистку каждые 300 секунд
@@ -106,15 +88,6 @@ io.on('connection', (socket) => {
 		console.log('В игре:', Object.values(players).map(player => player.name));
 	});
 
-	// Получение списка игроков
-	//  socket.on('requestPlayers', () => {
-	//  	io.emit('updatePlayers', Object.values(players));
-	// 	io.to(socket.id).emit('updatePlayers', Object.values(players));
-
-		// const playerList = getOnlinePlayers(); // Функция для получения списка игроков
-		//io.emit('updatePlayersList', playerList);
-	//});
-
 	// Создание комнаты
 	socket.on('createRoom', (roomData) => {
 		const roomId = roomData.id;
@@ -155,7 +128,7 @@ io.on('connection', (socket) => {
 			console.log(`Игрок ${players[socket.id].name} присоединился к комнате ${roomId}`);
 
 			// Уведомляем всех участников комнаты
-			io.to(roomId).emit('roomUpdate', rooms[roomId]);
+			//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		}
 	});
 
