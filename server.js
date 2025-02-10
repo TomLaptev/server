@@ -86,11 +86,8 @@ io.on('connection', (socket) => {
 		}
 		console.log('Игрок "', players[socket.id].name, ' "удален');
 		delete players[socket.id];
-		// for (const id in players) {
-		// 	delete players[id];
-		// }
 
-		//io.emit('updatePlayers', Object.values(players)); // Обновляем список
+		io.emit('updatePlayers', Object.values(players)); // Обновляем список
 	});
 
 	socket.on('disconnect', () => {
