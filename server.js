@@ -114,7 +114,7 @@ io.on('connection', (socket) => {
 
 		// const playerList = getOnlinePlayers(); // Функция для получения списка игроков
 		//io.emit('updatePlayersList', playerList);
-	});
+	//});
 
 	// Создание комнаты
 	socket.on('createRoom', (roomData) => {
