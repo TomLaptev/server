@@ -88,10 +88,11 @@ io.on('connection', (socket) => {
 		delete players[socket.id];
 
 		io.emit('updatePlayers', Object.values(players)); // Обновляем список
+		console.log('В игре:', Object.values(players).map(player => player.name));
 	});
 
 	socket.on('disconnect', () => {
-		console.log('Разъединение:',  players[socket.id].name);
+		console.log('Разъединение:'/* ,  players[socket.id].name */);
 		if (rooms[socket.id]) {
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			delete rooms[socket.id];
@@ -102,12 +103,13 @@ io.on('connection', (socket) => {
 		delete players[socket.id];
 
 		io.emit('updatePlayers', Object.values(players));
+		console.log('В игре:', Object.values(players).map(player => player.name));
 	});
 
 	// Получение списка игроков
-	// socket.on('requestPlayers', () => {
-	// 	io.emit('updatePlayers', Object.values(players));
-		//io.to(socket.id).emit('updatePlayers', Object.values(players));
+	//  socket.on('requestPlayers', () => {
+	//  	io.emit('updatePlayers', Object.values(players));
+	// 	io.to(socket.id).emit('updatePlayers', Object.values(players));
 
 		// const playerList = getOnlinePlayers(); // Функция для получения списка игроков
 		//io.emit('updatePlayersList', playerList);
