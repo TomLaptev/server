@@ -82,6 +82,7 @@ io.on('connection', (socket) => {
 		if (rooms[socket.id]) {
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			delete rooms[socket.id];
+			io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
 		console.log('Игрок "', players[socket.id].name, ' "удален');
