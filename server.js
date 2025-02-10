@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
-		console.log('Разъединение:',  players[socket.id].name, ' - ',socket.id);
+		console.log('Разъединение:',  players[socket.id].name);
 		if (rooms[socket.id]) {
 			delete rooms[socket.id];
 			io.to(roomId).emit('roomUpdate', rooms[roomId]);
