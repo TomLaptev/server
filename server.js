@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
 	socket.on('playerExit', () => {
 		console.log('Игрок отключился:', players[socket.id].name);
 		if (rooms[socket.id]) {
-			io.to(roomId).emit('roomUpdate', rooms[roomId]);
+			//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			delete rooms[socket.id];
 			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		console.log('Разъединение:'/* ,  players[socket.id].name */);
 		if (rooms[socket.id]) {
-			io.to(roomId).emit('roomUpdate', rooms[roomId]);
+			//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			delete rooms[socket.id];
 			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
