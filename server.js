@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('playerExit', () => {
-		console.log('Игрок отключился:', players[socket.id].name);
+		console.log('Игрок вышел из игры:', players[socket.id].name);
 		if (rooms[socket.id]) {
 			//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 			delete rooms[socket.id];
@@ -99,7 +99,7 @@ io.on('connection', (socket) => {
 			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
 		}
 
-		console.log('Игрок "', players[socket.id].name, ' "удален');
+		console.log(socket.id, ' "удален');
 		delete players[socket.id];
 
 		io.emit('updatePlayers', Object.values(players));
@@ -130,7 +130,7 @@ io.on('connection', (socket) => {
 	// Отправка приглашения игроку
 	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId, name }) => {
 		io.to(opponentSocketId).emit('roomInvitation', { roomId });
-		//io.to(roomId).emit('roomUpdate', rooms[roomId]);
+		io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		console.log(
 			`Приглашение отправлено игроку ${name} в комнату ${roomId}`
 		);
