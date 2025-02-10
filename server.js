@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
 		console.log('Игрок "', players[socket.id].name, ' "удален');
 		delete players[socket.id];
 
-		//io.emit('updatePlayers', Object.values(players));
+		io.emit('updatePlayers', Object.values(players));
 	});
 
 	// Получение списка игроков
