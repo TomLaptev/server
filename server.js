@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
 	});
 
 	// Обновление комнаты
-	socket.on('refusalPlay', (roomId) => {
+	socket.on('refusalPlay', ({roomId}) => {
 		if (rooms[socket.id]) {
 			io.to(roomId).emit('roomDelete', rooms[socket.id]);
 			delete rooms[socket.id];
@@ -144,7 +144,6 @@ io.on('connection', (socket) => {
 			delete  rooms[roomId];
 			console.log(`Приватная комната - ${roomId} игроком-Б удалена`);
 		}	
-		console.log(roomId);
 		
 		console.log("'Зависшие' комнаты:", Object.values(rooms).map(room => room.id));
 	});
