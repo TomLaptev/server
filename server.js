@@ -142,7 +142,7 @@ io.on('connection', (socket) => {
 		if (roomId) {
 			io.to(roomId).emit('roomDelete', roomId);
 			delete  rooms[roomId];
-			console.log(`Приватная комната - ${rooms[roomId]} игроком-Б удалена`);
+			console.log(`Приватная комната - ${roomId} игроком-Б удалена`);
 		}	
 		console.log(roomId);
 		
