@@ -139,15 +139,14 @@ io.on('connection', (socket) => {
 			delete rooms[socket.id];
 			console.log('Приватная комната игрока-А удалена');
 		}
-		if (roomId) {console.log('6789');
+		if (roomId) {
 			io.to(roomId).emit('roomDelete', roomId);
-			delete roomId;
-			console.log('Приватная комната игрока-Б удалена');
+			delete  rooms[roomId];
+			console.log(`Приватная комната - ${roomId} игроком-Б удалена`);
 		}	
-		console.log('12345');
 		console.log(roomId);
 		
-		console.log('Все комнаты:', Object.values(rooms).map(room => room.id));
+		console.log("'Зависшие' комнаты:", Object.values(rooms).map(room => room.id));
 	});
 
 });
