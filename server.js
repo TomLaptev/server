@@ -147,7 +147,9 @@ io.on('connection', (socket) => {
 		console.log('12345');
 		console.log(roomId);
 		
+		console.log('Все комнаты:', Object.values(rooms).map(room => room.id));
 	});
+
 });
 
 app.get('/', (req, res) => {
