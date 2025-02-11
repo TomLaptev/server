@@ -139,9 +139,9 @@ io.on('connection', (socket) => {
 			delete rooms[socket.id];
 			console.log('Приватная комната игрока-А удалена');
 		}
-		if (rooms[roomId]) {
-			io.to(roomId).emit('roomDelete', rooms[roomId]);
-			delete rooms[roomId];
+		if (roomId) {console.log('6789');
+			io.to(roomId).emit('roomDelete', roomId);
+			delete roomId;
 			console.log('Приватная комната игрока-Б удалена');
 		}	
 		console.log('12345');
