@@ -143,7 +143,9 @@ io.on('connection', (socket) => {
 			io.to(roomId).emit('roomDelete', rooms[roomId]);
 			delete rooms[roomId];
 			console.log('Приватная комната игрока-Б удалена');
-		}
+		}	
+		console.log('12345');
+		
 	});
 });
 
