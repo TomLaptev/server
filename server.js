@@ -145,15 +145,15 @@ io.on('connection', (socket) => {
 	});
 
 	// Обновление комнаты
-	socket.on('refusalPlay', ({ roomId }) => {
+	socket.on('refusalPlay', ({ opponent }) => {
 		if (rooms[socket.id]) {
-			io.to(roomId).emit('roomDelete', rooms[socket.id]);
+			io.to(opponent).emit('roomDelete', rooms[socket.id]);
 			delete rooms[socket.id];
 			console.log('Приватная комната игрока-А удалена');
-		} else if (roomId) {
-			io.to(roomId).emit('roomDelete', roomId);
-			delete rooms[roomId];
-			console.log(`Приватная комната - ${roomId} игроком-Б удалена`);
+		} else if (rooms[opponent]) {
+			io.to(opponent).emit('roomDelete', opponent);
+			delete rooms[opponent];
+			console.log(`Приватная комната - ${opponent} игроком-Б удалена`);
 		}
 
 		console.log(
