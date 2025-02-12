@@ -117,7 +117,7 @@ io.on('connection', (socket) => {
 			players[id].available = available;
 		}
 
-		io.emit('updatePlayers', Object.values(players)); // Отправляем обновленный список
+		//io.emit('updatePlayers', Object.values(players)); // Отправляем обновленный список
 	});
 
 	// Присоединение к комнате
