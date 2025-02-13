@@ -79,20 +79,48 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
-		console.log('Разъединение:' /* ,  players[socket.id].name */);
-		if (rooms[socket.id]) {
-			//io.to(roomId).emit('roomUpdate', rooms[roomId]);
-			delete rooms[socket.id];
-			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
-		}
-		console.log(socket.id, ' "удален');
-		delete players[socket.id];
+		// console.log('Разъединение:' /* ,  players[socket.id].name */);
+		// if (rooms[socket.id]) {
+		// 	//io.to(roomId).emit('roomUpdate', rooms[roomId]);
+		// 	delete rooms[socket.id];
+		// 	console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
+		// }
+		// console.log(socket.id, ' "удален');
+		// delete players[socket.id];
 
-		io.emit('updatePlayers', Object.values(players));
-		console.log(
-			'В игре:',
-			Object.values(players).map((player) => player.name)
-		);
+		// io.emit('updatePlayers', Object.values(players));
+		// console.log(
+		// 	'В игре:',
+		// 	Object.values(players).map((player) => player.name)
+		// );
+
+		console.log(`Игрок ${socket.id} отключился`);
+
+    // Проверяем, был ли игрок в комнате
+    const roomId = Object.keys(rooms).find((id) => rooms[id]?.players.includes(socket.id));
+
+    if (roomId) {
+        const room = rooms[roomId];
+
+        // Определяем второго игрока
+        const opponentId = room.players.find((id) => id !== socket.id);
+
+        if (opponentId) {
+            io.to(opponentId).emit("opponentDisconnected", roomId);
+            console.log(`Игрок ${opponentId} уведомлен о разрыве соединения с ${socket.id}`);
+        }
+
+        // Удаляем комнату
+        delete rooms[roomId];
+        console.log(`Приватная комната ${roomId} удалена`);
+    }
+
+    // Удаляем игрока из списка
+    delete players[socket.id];
+
+    // Отправляем обновленный список игроков всем
+   // io.emit("updatePlayers", Object.values(players));
+
 	});
 
 	// Получение списка игроков
@@ -105,8 +133,6 @@ io.on('connection', (socket) => {
 		const roomId = roomData.id;
 		socket.join(roomId); // Присоединяем создателя комнаты к ней
 		console.log(`Приватная комната ${roomId} создана игроком ${roomData.name}`);
-
-		//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 
 		// Можно сохранить данные комнаты, если нужно
 		rooms[roomId] = { ...roomData, players: [socket.id] };
@@ -127,7 +153,6 @@ io.on('connection', (socket) => {
 			players[id].available = available;
 		}
 
-		//io.emit('updatePlayers', Object.values(players)); // Отправляем обновленный список
 	});
 
 	// Присоединение к комнате
