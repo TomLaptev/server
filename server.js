@@ -147,12 +147,12 @@ io.on('connection', (socket) => {
 	// Обновление комнаты
 	socket.on('refusalPlay', ({ roomId }) => {
 		 if (rooms[roomId]) {
-			io.to(roomId).emit('roomDelete', rooms[roomId]);
+			io.to(roomId).emit('roomDelete', { roomId });
 			delete rooms[roomId];
 			console.log(`Приватная комната ${roomId} игрока-Б, ${players[roomId].name}, удалена`);
 		} else if (rooms[socket.id]) {
 			let roomId = socket.id
-			io.to(roomId).emit('roomDelete', rooms[roomId]);
+			io.to(roomId).emit('roomDelete', { roomId });
 			delete rooms[socket.id];
 			console.log(`Приватная комната ${roomId} игрока-А, ${players[roomId].name}, удалена`);
 		}
