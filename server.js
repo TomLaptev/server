@@ -79,21 +79,6 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
-		// console.log('Разъединение:' /* ,  players[socket.id].name */);
-		// if (rooms[socket.id]) {
-		// 	//io.to(roomId).emit('roomUpdate', rooms[roomId]);
-		// 	delete rooms[socket.id];
-		// 	console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
-		// }
-		// console.log(socket.id, ' "удален');
-		// delete players[socket.id];
-
-		// io.emit('updatePlayers', Object.values(players));
-		// console.log(
-		// 	'В игре:',
-		// 	Object.values(players).map((player) => player.name)
-		// );
-
 		console.log(`Игрок ${socket.id} отключился`);
 
     // Проверяем, был ли игрок в комнате
@@ -113,13 +98,11 @@ io.on('connection', (socket) => {
         // Удаляем комнату
         delete rooms[roomId];
         console.log(`Приватная комната ${roomId} удалена`);
-    }
+				
+    } else io.emit('updatePlayers', Object.values(players));
 
     // Удаляем игрока из списка
     delete players[socket.id];
-
-    // Отправляем обновленный список игроков всем
-   // io.emit("updatePlayers", Object.values(players));
 
 	});
 
