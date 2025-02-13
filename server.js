@@ -145,17 +145,18 @@ io.on('connection', (socket) => {
 	});
 
 	// Обновление комнаты
-	/* 	socket.on('refusalPlay', ({ opponent, roomId }) => {
+	socket.on('refusalPlay', ({ roomId }) => {
+		if (rooms[socket.id]) {
+			io.to(socket.id).emit('roomDelete', rooms[socket.id]);
+			delete rooms[socket.id];
+			console.log('Приватная комната игрока-А удалена');
+		}
 		if (rooms[roomId]) {
-			io.to(opponent).emit('roomDelete', rooms[roomId]);
+			io.to(roomId).emit('roomDelete', rooms[roomId]);
 			delete rooms[roomId];
-			console.log(`Приватная комната - ${roomId} удалена`);
-		} 
-		console.log(
-			"'Зависшие' комнаты:",
-			Object.values(rooms).map((room) => room.id)
-		);
-	}); */
+			console.log('Приватная комната игрока-Б удалена');
+		}
+		/*	}); 
 
 	socket.on('refusalPlay', ({ opponent, roomId }) => {
 		if (rooms[roomId]) {
@@ -164,12 +165,9 @@ io.on('connection', (socket) => {
 			console.log(`Приватная комната - ${roomId} удалена`);
 		} else {
 			console.log(`Ошибка: комната ${roomId} не найдена`);
-		}
+		}*/
 
-		console.log(
-			"'Зависшие' комнаты:",
-			Object.values(rooms).map((room) => room.id)
-		);
+		console.log("'Зависшие' комнаты:", Object.values(rooms).map((room) => room.id));
 	});
 });
 
@@ -179,3 +177,4 @@ app.get('/', (req, res) => {
 server.listen(PORT, () => {
 	console.log(`Сервер запущен на порту ${PORT}`);
 });
+this.backButton;
