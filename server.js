@@ -149,24 +149,13 @@ io.on('connection', (socket) => {
 		if (rooms[socket.id]) {
 			io.to(socket.id).emit('roomDelete', rooms[socket.id]);
 			delete rooms[socket.id];
-			console.log(`Приватная комната ${socket.id} игрока-А удалена`);
+			console.log(`Приватная комната ${socket.id} игрока-А, ${players[socket.id].name}, удалена`);
 		}
 		if (rooms[roomId]) {
 			io.to(roomId).emit('roomDelete', rooms[roomId]);
 			delete rooms[roomId];
-			console.log(`Приватная комната ${roomId} игрока-Б удалена`);
+			console.log(`Приватная комната ${roomId} игрока-Б, ${players[roomId].name}, удалена`);
 		}
-		/*	}); 
-
-	socket.on('refusalPlay', ({ opponent, roomId }) => {
-		if (rooms[roomId]) {
-			io.to(opponent).emit('roomDelete', roomId);
-			delete rooms[roomId];
-			console.log(`Приватная комната - ${roomId} удалена`);
-		} else {
-			console.log(`Ошибка: комната ${roomId} не найдена`);
-		}*/
-
 		console.log("'Зависшие' комнаты:", Object.values(rooms).map((room) => room.id));
 	});
 });
