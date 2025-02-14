@@ -58,7 +58,6 @@ io.on('connection', (socket) => {
 			Object.values(players).map((player) => player.name)
 		);
 		io.to(socket.id).emit('dataSent', socket.id);
-		//io.emit('updatePlayers', validPlayers);
 	});
 
 	socket.on('playerExit', () => {
