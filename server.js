@@ -84,6 +84,7 @@ io.on('connection', (socket) => {
     const roomId = Object.keys(rooms).find((id) => rooms[id]?.players.includes(socket.id));
 
     if (roomId) {
+			console.log("Игрок был в комнате");
         const room = rooms[roomId];
 
         // Определяем второго игрока
@@ -106,6 +107,7 @@ io.on('connection', (socket) => {
 	});
 
 	// Получение списка игроков
+	console.log("Контроль запроса на обновление");
 	socket.on('requestPlayers', () => {
 		io.emit('updatePlayers', Object.values(players));
 	});
