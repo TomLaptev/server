@@ -107,9 +107,9 @@ io.on('connection', (socket) => {
 			delete players[socket.id];
 			console.log('Контроль запроса на обновление');
 			io.emit('updatePlayers', Object.values(players));
-			for (const id in players) {
-				delete players[id];
-			}
+			// for (const id in players) {
+			// 	delete players[id];
+			// }
 		}
 	});
 
