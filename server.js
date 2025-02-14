@@ -102,11 +102,13 @@ io.on('connection', (socket) => {
 			// Удаляем комнату
 			delete rooms[roomId];
 			console.log(`Приватная комната ${roomId} удалена`);
-		} else {
-			// Удаляем игрока из списка
+		} 
+		// Удаляем игрока из списка
+		if(players[socket.id]) {
 			delete players[socket.id];
-			console.log('Контроль запроса на обновление');
+			console.log(`Игрок ${players[socket.id].name} удалён из списка игроков`);
 			io.emit('updatePlayers', Object.values(players));
+			console.log('Контроль запроса на обновление');
 			// for (const id in players) {
 			// 	delete players[id];
 			// }
