@@ -102,10 +102,10 @@ io.on('connection', (socket) => {
 			// Удаляем комнату
 			delete rooms[roomId];
 			console.log(`Приватная комната ${roomId} удалена`);
-		} 
+		}
 
 		// Удаляем игрока из списка
-		if(players[socket.id]) {
+		if (players[socket.id]) {
 			delete players[socket.id];
 			console.log(`Игрок ${socket.id} удалён из списка игроков`);
 
@@ -156,27 +156,35 @@ io.on('connection', (socket) => {
 				`Игрок ${players[socket.id].name} присоединился к комнате ${roomId}`
 			);
 
+			console.log('Список игроков в комнате:', rooms[roomId].players);
 			//Определяем второго игрока (оппонента)
-			const opponentId = rooms[roomId].players.find(id => id !== socket.id);
+			const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
 
 			if (opponentId) {
-					io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
-					console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
+				io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
+				console.log(
+					`Отправление-1 на обновление комнаты оппоненту ${opponentId}`
+				);
 			}
+
+			console.log(`socket.id у текущего игрока: ${socket.id}`);
+			console.log(`opponentId: ${opponentId}`);
 		}
 	});
 
 	// Обмен данными в комнате
 	socket.on('updatingRoomData', (roomId, data) => {
-    if (!rooms[roomId]) return; // Проверяем, существует ли комната
+		if (!rooms[roomId]) return; // Проверяем, существует ли комната
 
-    const opponentId = rooms[roomId].players.find(id => id !== socket.id);
+		const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
 
-    if (opponentId) {
-        io.to(opponentId).emit("roomUpdate", data);
-				console.log(`Отправление-2 на обновление комнаты оппоненту ${opponentId}`);
-    }
-});
+		if (opponentId) {
+			io.to(opponentId).emit('roomUpdate', data);
+			console.log(
+				`Отправление-2 на обновление комнаты оппоненту ${opponentId}`
+			);
+		}
+	});
 
 	// Отказ от игры
 	socket.on('refusalPlay', ({ roomId }) => {
