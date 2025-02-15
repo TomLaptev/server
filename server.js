@@ -156,13 +156,13 @@ io.on('connection', (socket) => {
 				`Игрок ${players[socket.id].name} присоединился к комнате ${roomId}`
 			);
 
-			// Определяем второго игрока (оппонента)
-			// const opponentId = rooms[roomId].players.find(id => id !== socket.id);
+			//Определяем второго игрока (оппонента)
+			const opponentId = rooms[roomId].players.find(id => id !== socket.id);
 
-			// if (opponentId) {
-			// 		io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
-			// 		console.log(`Отправлено обновление комнаты оппоненту ${opponentId}`);
-			// }
+			if (opponentId) {
+					io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
+					console.log(`Отправлено обновление комнаты оппоненту ${opponentId}`);
+			}
 		}
 	});
 
