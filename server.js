@@ -161,7 +161,7 @@ io.on('connection', (socket) => {
 
 		console.log('Список игроков в комнате:', rooms[roomId].players);
 		//Определяем оппонента
-		const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
+		const opponentId = rooms[roomId].players.find((id) => id == socket.id);
 
 		if (opponentId) {
 			io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
