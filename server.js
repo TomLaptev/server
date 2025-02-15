@@ -161,14 +161,22 @@ io.on('connection', (socket) => {
 
 		console.log('Список игроков в комнате:', rooms[roomId].players);
 		//Определяем оппонента
-		const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
+		// const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
 
-		if (opponentId) {
-			io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
-			console.log(
-				`Отправление-1 на обновление комнаты оппоненту ${opponentId}`
-			);
-		}
+		// if (opponentId) {
+		// 	io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
+		// 	console.log(
+		// 		`Отправление-1 на обновление комнаты оппоненту ${opponentId}`
+		// 	);
+		// }
+
+		if (rooms[roomId].players.length === 2) {
+			const [player1, player2] = rooms[roomId].players;
+			const opponentId = socket.id === player1 ? player2 : player1;
+	
+			io.to(opponentId).emit("roomUpdate", rooms[roomId]); 
+			console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
+	}
 
 	});
 
@@ -176,14 +184,22 @@ io.on('connection', (socket) => {
 	socket.on('updatingRoomData', (roomId, data) => {
 		if (!rooms[roomId]) return; // Проверяем, существует ли комната
 
-		const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
+		// const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
 
-		if (opponentId) {
-			io.to(opponentId).emit('roomUpdate', data);
-			console.log(
-				`Отправление-2 на обновление комнаты оппоненту ${opponentId}`
-			);
-		}
+		// if (opponentId) {
+		// 	io.to(opponentId).emit('roomUpdate', data);
+		// 	console.log(
+		// 		`Отправление-2 на обновление комнаты оппоненту ${opponentId}`
+		// 	);
+		// }
+
+		if (rooms[roomId].players.length === 2) {
+			const [player1, player2] = rooms[roomId].players;
+			const opponentId = socket.id === player1 ? player2 : player1;
+	
+			io.to(opponentId).emit("roomUpdate", rooms[roomId]); 
+			console.log(`Отправление-2 на обновление комнаты оппоненту ${opponentId}`);
+	}
 	});
 
 	// Отказ от игры
