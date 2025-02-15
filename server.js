@@ -173,6 +173,9 @@ io.on('connection', (socket) => {
 		if (rooms[roomId].players.length === 2) {
 			const [player1, player2] = rooms[roomId].players;
 			const opponentId = socket.id === player1 ? player2 : player1;
+			console.log([player1, player2]);
+			console.log(opponentId);
+			console.log(socket.id);
 	
 			io.to(opponentId).emit("roomUpdate", rooms[roomId]); 
 			console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
