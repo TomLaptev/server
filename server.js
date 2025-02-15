@@ -172,17 +172,17 @@ io.on('connection', (socket) => {
 	});
 
 	// Обмен данными в комнате
-	socket.on('updatingRoomData', (opponent, data) => {
+	socket.on('updatingRoomData', rooms[roomId],(opponent, data) => {
 		console.log('opponent:', opponent);
 		console.log('data:', data);
-		//if (!rooms[opponent]) return; // Проверяем, существует ли комната
+		if (!rooms[roomId]) return; // Проверяем, существует ли комната
 
 
 		//if (rooms[roomId].players.length === 2) {}
 			//const [player1, player2] = rooms[roomId].players;
 			//const opponentId = /* rooms[roomId].players[0]; */
 	
-			io.to(opponent).emit("roomUpdate", rooms[opponent]); 
+			io.to(opponent).emit("roomUpdate", rooms[roomId]); 
 			console.log(`Отправление-2 на обновление комнаты оппоненту ${opponent}`);
 	
 	});
