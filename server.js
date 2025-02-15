@@ -172,17 +172,18 @@ io.on('connection', (socket) => {
 	});
 
 	// Обмен данными в комнате
-	socket.on('updatingRoomData', (roomId, data,) => {
+	socket.on('updatingRoomData', (opponent, data) => {
+		console.log(data)
 		if (!rooms[roomId]) return; // Проверяем, существует ли комната
 
 
-		if (rooms[roomId].players.length === 2) {
-			const [player1, player2] = rooms[roomId].players;
-			const opponentId = rooms[roomId].players[0];
+		//if (rooms[roomId].players.length === 2) {}
+			//const [player1, player2] = rooms[roomId].players;
+			//const opponentId = /* rooms[roomId].players[0]; */
 	
-			io.to(opponentId).emit("roomUpdate", rooms[roomId]); 
-			console.log(`Отправление-2 на обновление комнаты оппоненту ${opponentId}`);
-	}
+			io.to(opponent).emit("roomUpdate", rooms[roomId]); 
+			console.log(`Отправление-2 на обновление комнаты оппоненту ${opponent}`);
+	
 	});
 
 	// Отказ от игры
