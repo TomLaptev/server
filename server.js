@@ -174,14 +174,14 @@ io.on('connection', (socket) => {
 	// Обмен данными в комнате
 	socket.on('updatingRoomData', (opponent, data) => {
 		console.log(data)
-		if (!rooms[roomId]) return; // Проверяем, существует ли комната
+		if (!rooms[opponent]) return; // Проверяем, существует ли комната
 
 
 		//if (rooms[roomId].players.length === 2) {}
 			//const [player1, player2] = rooms[roomId].players;
 			//const opponentId = /* rooms[roomId].players[0]; */
 	
-			io.to(opponent).emit("roomUpdate", rooms[roomId]); 
+			io.to(opponent).emit("roomUpdate", rooms[opponent]); 
 			console.log(`Отправление-2 на обновление комнаты оппоненту ${opponent}`);
 	
 	});
