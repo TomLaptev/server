@@ -135,7 +135,6 @@ io.on('connection', (socket) => {
 	// Отправка приглашения игроку
 	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId, name }) => {
 		io.to(opponentSocketId).emit('roomInvitation', { roomId });
-		//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		console.log(`Приглашение отправлено игроку ${name} в комнату ${roomId}`);
 	});
 
@@ -158,12 +157,12 @@ io.on('connection', (socket) => {
 			);
 
 			// Определяем второго игрока (оппонента)
-			const opponentId = rooms[roomId].players.find(id => id !== socket.id);
+			// const opponentId = rooms[roomId].players.find(id => id !== socket.id);
 
-			if (opponentId) {
-					io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
-					console.log(`Отправлено обновление комнаты оппоненту ${opponentId}`);
-			}
+			// if (opponentId) {
+			// 		io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
+			// 		console.log(`Отправлено обновление комнаты оппоненту ${opponentId}`);
+			// }
 		}
 	});
 
