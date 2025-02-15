@@ -175,7 +175,7 @@ io.on('connection', (socket) => {
 	socket.on('updatingRoomData', (opponent, data) => {
 		console.log('opponent:', opponent);
 		console.log('data:', data);
-		if (!rooms[opponent]) return; // Проверяем, существует ли комната
+		//if (!rooms[opponent]) return; // Проверяем, существует ли комната
 
 
 		//if (rooms[roomId].players.length === 2) {}
