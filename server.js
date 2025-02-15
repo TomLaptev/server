@@ -151,8 +151,10 @@ io.on('connection', (socket) => {
 	socket.on('joinRoom', (roomId) => {
 		if (!rooms[roomId]) return;
 
-		socket.join(roomId);
-		rooms[roomId].players.push(socket.id);
+		if (!rooms[roomId].players.includes(socket.id)) {
+			socket.join(roomId);
+			rooms[roomId].players.push(socket.id);
+	}
 
 		console.log(
 			`Игрок ${players[socket.id]?.name} присоединился к комнате ${roomId}`);
