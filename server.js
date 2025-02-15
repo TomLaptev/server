@@ -172,7 +172,7 @@ io.on('connection', (socket) => {
 	});
 
 	// Обмен данными в комнате
-	socket.on('updatingRoomData', (opponent, data) => {
+	socket.on('updatingRoomData', (opponent, {data}) => {
 		console.log('opponent:', opponent);
 		console.log('data:', data);
 		//if (!rooms[opponent]) return; // Проверяем, существует ли комната
