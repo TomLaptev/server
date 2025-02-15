@@ -157,12 +157,28 @@ io.on('connection', (socket) => {
 				`Игрок ${players[socket.id].name} присоединился к комнате ${roomId}`
 			);
 
-			// Уведомляем всех участников комнаты
-			io.to(roomId).emit('roomUpdate', rooms[roomId]);
+			// Определяем второго игрока (оппонента)
+			const opponentId = rooms[roomId].players.find(id => id !== socket.id);
+
+			if (opponentId) {
+					io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
+					console.log(`Отправлено обновление комнаты оппоненту ${opponentId}`);
+			}
 		}
 	});
 
-	// Обновление комнаты
+	// Обмен данными в комнате
+	socket.on('updatingRoomData', (roomId, data) => {
+    if (!rooms[roomId]) return; // Проверяем, существует ли комната
+
+    const opponentId = rooms[roomId].players.find(id => id !== socket.id);
+
+    if (opponentId) {
+        io.to(opponentId).emit("roomUpdate", data);
+    }
+});
+
+	// Отказ от игры
 	socket.on('refusalPlay', ({ roomId }) => {
 		if (rooms[roomId]) {
 			io.to(roomId).emit('roomDelete', { roomId });
