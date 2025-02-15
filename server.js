@@ -149,27 +149,25 @@ io.on('connection', (socket) => {
 
 	// Присоединение к комнате
 	socket.on('joinRoom', (roomId) => {
+		if (!rooms[roomId]) return;
+
 		socket.join(roomId);
-		if (rooms[roomId]) {
-			rooms[roomId].players.push(socket.id);
+		rooms[roomId].players.push(socket.id);
+
+		console.log(
+			`Игрок ${players[socket.id]?.name} присоединился к комнате ${roomId}`);
+
+		console.log('Список игроков в комнате:', rooms[roomId].players);
+		//Определяем оппонента
+		const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
+
+		if (opponentId) {
+			io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
 			console.log(
-				`Игрок ${players[socket.id].name} присоединился к комнате ${roomId}`
+				`Отправление-1 на обновление комнаты оппоненту ${opponentId}`
 			);
-
-			console.log('Список игроков в комнате:', rooms[roomId].players);
-			//Определяем второго игрока (оппонента)
-			const opponentId = rooms[roomId].players.find((id) => id !== socket.id);
-
-			if (opponentId) {
-				io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
-				console.log(
-					`Отправление-1 на обновление комнаты оппоненту ${opponentId}`
-				);
-			}
-
-			console.log(`socket.id у текущего игрока: ${socket.id}`);
-			console.log(`opponentId: ${opponentId}`);
 		}
+
 	});
 
 	// Обмен данными в комнате
