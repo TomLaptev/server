@@ -161,7 +161,7 @@ io.on('connection', (socket) => {
 
 			if (opponentId) {
 					io.to(opponentId).emit('roomUpdate', rooms[roomId]); // Уведомляем только оппонента
-					console.log(`Отправлено обновление комнаты оппоненту ${opponentId}`);
+					console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
 			}
 		}
 	});
@@ -174,6 +174,7 @@ io.on('connection', (socket) => {
 
     if (opponentId) {
         io.to(opponentId).emit("roomUpdate", data);
+				console.log(`Отправление-2 на обновление комнаты оппоненту ${opponentId}`);
     }
 });
 
