@@ -188,17 +188,15 @@ io.on('connection', (socket) => {
 	socket.on('refusalPlay', ({ roomId }) => {
 		if (rooms[roomId]) {
 			io.to(roomId).emit('roomDelete', { roomId });
+
+			console.log(`Приватная комната ${roomId} игрока-Б, удалена`);
 			delete rooms[roomId];
-			console.log(
-				`Приватная комната ${roomId} игрока-Б, ${players[roomId].name}, удалена`
-			);
 		} else if (rooms[socket.id]) {
 			let roomId = socket.id;
 			io.to(roomId).emit('roomDelete', { roomId });
+
+			console.log(`Приватная комната ${roomId} игрока-А, удалена`);
 			delete rooms[socket.id];
-			console.log(
-				`Приватная комната ${roomId} игрока-А, ${players[roomId].name}, удалена`
-			);
 		}
 		console.log(
 			"'Зависшие' комнаты:",
