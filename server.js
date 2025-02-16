@@ -111,9 +111,6 @@ io.on('connection', (socket) => {
 
 			io.emit('updatePlayers', Object.values(players));
 			console.log('Контроль запроса на обновление');
-			// for (const id in players) {
-			// 	delete players[id];
-			// }
 		}
 	});
 
@@ -124,7 +121,7 @@ io.on('connection', (socket) => {
 
 	// Создание комнаты
 	socket.on('createRoom', (roomData) => {
-		const roomId = roomData.id;
+		const roomId = roomData.userRoom; // Используем userRoom как ключ
 		socket.join(roomId); // Присоединяем создателя комнаты к ней
 		console.log(`Приватная комната ${roomId} создана игроком ${roomData.name}`);
 
@@ -154,21 +151,14 @@ io.on('connection', (socket) => {
 	socket.on('joinRoom', (roomId) => {
 		if (!rooms[roomId]) return;
 
-		if (!rooms[roomId].players.includes(socket.id)) {
-			socket.join(roomId);
-			rooms[roomId].players.push(socket.id);
+		if (!rooms[roomId].players) {
+			rooms[roomId].players = [];
 		}
+		rooms[roomId].players.push(socket.id);
 
-		console.log(`Игрок ${players[socket.id]?.name} присоединился к комнате ${roomId}`);
-
+		//console.log(`Игрок ${players[socket.id]?.name} присоединился к комнате ${roomId}`);
+		console.log(`Игрок ${socket.id} присоединился к комнате ${roomId}`);
 		console.log('Список игроков в комнате:', rooms[roomId].players);
-
-		// 	if (rooms[roomId].players.length === 2) {
-		// 		const opponentId = rooms[roomId].players.at(-1);
-
-		// 		// io.to(opponentId).emit("roomUpdate", rooms[roomId]);
-		// 		// console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
-		// }
 	});
 
 	// Обмен данными в комнате
