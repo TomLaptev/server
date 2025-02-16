@@ -138,7 +138,7 @@ io.on('connection', (socket) => {
 		console.log(`Приглашение отправлено игроку ${name} в комнату ${roomId}`);
 
 		io.to(opponentSocketId).emit('roomUpdate', rooms[roomId]);
-		console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
+		console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentSocketId}`);
 	});
 
 	socket.on('updatePlayersStatus', ({ id, opponentSocketId, available }) => {
