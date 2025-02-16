@@ -136,6 +136,9 @@ io.on('connection', (socket) => {
 	socket.on('sendInvitePlayer', ({ roomId, opponentSocketId, name }) => {
 		io.to(opponentSocketId).emit('roomInvitation', { roomId });
 		console.log(`Приглашение отправлено игроку ${name} в комнату ${roomId}`);
+
+		io.to(opponentSocketId).emit('roomUpdate', rooms[roomId]);
+		console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
 	});
 
 	socket.on('updatePlayersStatus', ({ id, opponentSocketId, available }) => {
@@ -154,35 +157,31 @@ io.on('connection', (socket) => {
 		if (!rooms[roomId].players.includes(socket.id)) {
 			socket.join(roomId);
 			rooms[roomId].players.push(socket.id);
-	}
+		}
 
-		console.log(
-			`Игрок ${players[socket.id]?.name} присоединился к комнате ${roomId}`);
+		console.log(`Игрок ${players[socket.id]?.name} присоединился к комнате ${roomId}`);
 
 		console.log('Список игроков в комнате:', rooms[roomId].players);
-	
 
-		if (rooms[roomId].players.length === 2) {
-			const opponentId = rooms[roomId].players.at(-1);
-	
-			io.to(opponentId).emit("roomUpdate", rooms[roomId]); 
-			console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
-	}
+		// 	if (rooms[roomId].players.length === 2) {
+		// 		const opponentId = rooms[roomId].players.at(-1);
 
+		// 		// io.to(opponentId).emit("roomUpdate", rooms[roomId]);
+		// 		// console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentId}`);
+		// }
 	});
 
 	// Обмен данными в комнате
 	socket.on('updatingRoomData', ({ roomId, opponentId, updatedData }) => {
-    if (!rooms[roomId]) return;
+		// if (!rooms[roomId]) return;
 
-    // Обновляем только переданные параметры, сохраняя остальные
-    rooms[roomId] = { ...rooms[roomId], ...updatedData };
+		// Обновляем только переданные параметры, сохраняя остальные
+		rooms[roomId] = { ...rooms[roomId], ...updatedData };
 
-    // Отправляем обновление только оппоненту
-    io.to(opponentId).emit("roomUpdate", rooms[roomId]);
+		// Отправляем обновление только оппоненту
+		io.to(opponentId).emit('roomUpdate', rooms[roomId]);
 
-    console.log(`Обновление комнаты ${roomId} отправлено ${opponentId}`);
-	
+		console.log(`Обновление комнаты ${roomId} отправлено ${opponentId}`);
 	});
 
 	// Отказ от игры
