@@ -37,7 +37,7 @@ function removeInactivePlayers() {
 setInterval(removeInactivePlayers, 300000);
 
 io.on('connection', (socket) => {
-	console.log('В игру вошел', players[socket.id].name, ': ', socket.id);
+	console.log(`Новое подключение: ${socket.id}`);
 
 	socket.on('playerJoin', (playerData) => {
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
 		} else {
 			console.warn('Неполные данные игрока:', playerData);
 		}
-		//console.log('Присоединился игрок:', playerData.name, ': ', playerData.id);
+		console.log('Присоединился игрок:', playerData.name, ': ', playerData.id);
 
 		// Отправляем только корректные данные
 		const validPlayers = Object.values(players).filter(
