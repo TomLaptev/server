@@ -209,10 +209,10 @@ io.on('connection', (socket) => {
 	});
 
 	// Отказ от игры
-	socket.on('refusalPlay', ({ roomId }) => {
+	socket.on('refusalPlay', ({opponentId, roomId }) => {
 		console.log( 'roomId: ', rooms[roomId])
 		if (rooms[roomId]) {
-			io.to(roomId).emit('roomDelete', { roomId });
+			io.to(opponentId).emit('roomDelete', { roomId });
 
 			console.log(`Приватная комната ${roomId} удалена`);
 			delete rooms[roomId];
