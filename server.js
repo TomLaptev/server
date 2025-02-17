@@ -108,7 +108,6 @@ io.on('connection', (socket) => {
 			io.emit('updatePlayers', Object.values(players));
 			console.log('Контроль запроса на обновление');
 		}
-
 	});
 
 	socket.on('disconnect', () => {
@@ -191,7 +190,6 @@ io.on('connection', (socket) => {
 		}
 		rooms[roomId].players.push(socket.id);
 
-		//console.log(`Игрок ${players[socket.id]?.name} присоединился к комнате ${roomId}`);
 		console.log(`Игрок ${socket.id} присоединился к комнате ${roomId}`);
 		console.log('Список игроков в комнате:', rooms[roomId].players);
 	});
@@ -212,16 +210,18 @@ io.on('connection', (socket) => {
 
 	// Отказ от игры
 	socket.on('refusalPlay', ({ roomId }) => {
+		console.log( 'roomId: ', rooms[roomId])
 		if (rooms[roomId]) {
 			io.to(roomId).emit('roomDelete', { roomId });
 
 			console.log(`Приватная комната ${roomId} удалена`);
 			delete rooms[roomId];
+
+			console.log(
+				"'Зависшие' комнаты:",
+				Object.keys(rooms) // Теперь список покажет только актуальные комнаты
+			);
 		}
-		console.log(
-			"'Зависшие' комнаты:",
-			Object.values(rooms).map((room) => room.id)
-		);
 	});
 });
 
