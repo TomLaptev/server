@@ -211,15 +211,15 @@ io.on('connection', (socket) => {
 	});
 
 	// Отказ от игры
-	socket.on('refusalPlay', ({ roomId }) => {
+	socket.on('refusalPlay', ({opponent,  roomId }) => {
 		if (rooms[roomId]) {
-			io.to(roomId).emit('roomDelete', { roomId });
+			io.to(opponent).emit('roomDelete', { roomId });
 
 			console.log(`Приватная комната ${roomId} игрока-Б, удалена`);
 			delete rooms[roomId];
 		} else if (rooms[socket.id]) {
 			let roomId = socket.id;
-			io.to(roomId).emit('roomDelete', { roomId });
+			io.to(opponent).emit('roomDelete', { roomId });
 
 			console.log(`Приватная комната ${roomId} игрока-А, удалена`);
 			delete rooms[socket.id];
