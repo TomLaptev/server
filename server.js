@@ -62,23 +62,56 @@ io.on('connection', (socket) => {
 
 	socket.on('playerExit', () => {
 		console.log(`Игрок ${socket.id}: ${players[socket.id].name} вышел из игры`);
-		if (rooms[socket.id]) {
-			//io.to(roomId).emit('roomUpdate', rooms[roomId]);
-			delete rooms[socket.id];
-			console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
-		}
-		console.log('Игрок "', players[socket.id].name, ' "удален');
-		delete players[socket.id];
+		// if (rooms[socket.id]) {
+		// 	//io.to(roomId).emit('roomUpdate', rooms[roomId]);
+		// 	delete rooms[socket.id];
+		// 	console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
+		// }
+		// console.log('Игрок "', players[socket.id].name, ' "удален');
+		// delete players[socket.id];
 
-		io.emit('updatePlayers', Object.values(players)); // Обновляем список
-		console.log(
-			'В игре:',
-			Object.values(players).map((player) => player.name)
+		// io.emit('updatePlayers', Object.values(players)); // Обновляем список
+		// console.log(
+		// 	'В игре:',
+		// 	Object.values(players).map((player) => player.name)
+		// );
+
+		// Проверяем, был ли игрок в комнате
+		const roomId = Object.keys(rooms).find((id) =>
+			rooms[id]?.players.includes(socket.id)
 		);
+
+		if (roomId) {
+			console.log('Игрок был в комнате');
+			const room = rooms[roomId];
+
+			// Определяем второго игрока
+			const opponentId = room.players.find((id) => id !== socket.id);
+
+			if (opponentId) {
+				io.to(opponentId).emit('opponentExit', roomId);
+				console.log(
+					`Игрок ${opponentId} уведомлен о выходе игрока ${socket.id}`
+				);
+			}
+
+			// Удаляем комнату
+			delete rooms[roomId];
+			console.log(`Приватная комната ${roomId} удалена`);
+		}
+
+		// Удаляем игрока из списка
+		if (players[socket.id]) {
+			delete players[socket.id];
+			console.log(`Игрок ${socket.id} удалён из списка игроков`);
+
+			io.emit('updatePlayers', Object.values(players));
+			console.log('Контроль запроса на обновление');
+		}
+
 	});
 
 	socket.on('disconnect', () => {
-		//console.log(`Игрок ${socket.id} отключился`);
 		console.log(`Игрок ${socket.id}: ${players[socket.id].name} отключился`);
 		// Проверяем, был ли игрок в комнате
 		const roomId = Object.keys(rooms).find((id) =>
@@ -135,7 +168,9 @@ io.on('connection', (socket) => {
 		console.log(`Приглашение отправлено игроку ${name} в комнату ${roomId}`);
 
 		io.to(opponentSocketId).emit('roomUpdate', rooms[roomId]);
-		console.log(`Отправление-1 на обновление комнаты оппоненту ${opponentSocketId}`);
+		console.log(
+			`Отправление-1 на обновление комнаты оппоненту ${opponentSocketId}`
+		);
 	});
 
 	socket.on('updatePlayersStatus', ({ id, opponentSocketId, available }) => {
