@@ -169,6 +169,7 @@ io.on('connection', (socket) => {
 		rooms[roomId] = { ...rooms[roomId], ...updatedData };
 
 		// Отправляем обновление только оппоненту
+		console.log(`opponentId: ${opponentId}`);
 		io.to(opponentId).emit('roomUpdate', rooms[roomId]);
 
 		console.log(`Обновление комнаты ${roomId} отправлено ${opponentId}`);
