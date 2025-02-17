@@ -113,7 +113,7 @@ io.on('connection', (socket) => {
 
 	socket.on('disconnect', () => {
 		console.log(`Игрок ${socket.id} отключился`);
-		//console.log(`Игрок ${socket.id} отключился`);
+		console.log(`Игрок ${players[socket.id]} отключился`);
 
 		// Проверяем, был ли игрок в комнате
 		const roomId = Object.keys(rooms).find((id) =>
@@ -213,7 +213,6 @@ io.on('connection', (socket) => {
 
 	// Отказ от игры
 	socket.on('refusalPlay', ({opponentId, roomId }) => {
-		console.log( 'roomId: ', rooms[roomId])
 		if (rooms[roomId]) {
 			io.to(opponentId).emit('roomDelete', { roomId });
 
