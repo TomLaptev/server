@@ -62,6 +62,7 @@ io.on('connection', (socket) => {
 
 	socket.on('playerExit', () => {
 		console.log(`Игрок ${socket.id} вышел из игры`);
+		console.log(`Игрок ${players[socket.id]} вышел из игры`);
 		// if (rooms[socket.id]) {
 		// 	//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		// 	delete rooms[socket.id];
@@ -112,6 +113,8 @@ io.on('connection', (socket) => {
 
 	socket.on('disconnect', () => {
 		console.log(`Игрок ${socket.id} отключился`);
+		//console.log(`Игрок ${socket.id} отключился`);
+
 		// Проверяем, был ли игрок в комнате
 		const roomId = Object.keys(rooms).find((id) =>
 			rooms[id]?.players.includes(socket.id)
