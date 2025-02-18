@@ -65,7 +65,6 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('playerExit', () => {
-		//console.log(`Игрок ${socket.id} вышел из игры`);
 		console.log(`Игрок ${players[socket.id].name} вышел из игры`);
 		// if (rooms[socket.id]) {
 		// 	//io.to(roomId).emit('roomUpdate', rooms[roomId]);
@@ -94,7 +93,8 @@ io.on('connection', (socket) => {
 			const opponentId = room.players.find((id) => id !== socket.id);
 
 			if (opponentId) {
-				io.to(opponentId).emit('opponentExit', roomId);
+				//io.to(opponentId).emit('opponentExit', roomId);
+				io.to(opponentId).emit('roomDelete', roomId);
 				console.log(
 					`Игрок ${opponentId} уведомлен о выходе игрока ${socket.id}`
 				);
@@ -215,19 +215,19 @@ io.on('connection', (socket) => {
 	});
 
 	// Отказ от игры
-	socket.on('refusalPlay', ({opponentId, roomId }) => {
-		if (rooms[roomId]) {
-			io.to(opponentId).emit('roomDelete', { roomId });
+	// socket.on('refusalPlay', ({opponentId, roomId }) => {
+	// 	if (rooms[roomId]) {
+	// 		io.to(opponentId).emit('roomDelete', { roomId });
 
-			console.log(`Приватная комната ${roomId} удалена`);
-			delete rooms[roomId];
+	// 		console.log(`Приватная комната ${roomId} удалена`);
+	// 		delete rooms[roomId];
 
-			console.log(
-				"'Зависшие' комнаты:",
-				Object.keys(rooms) // Теперь список покажет только актуальные комнаты
-			);
-		}
-	});
+	// 		console.log(
+	// 			"'Зависшие' комнаты:",
+	// 			Object.keys(rooms) // Теперь список покажет только актуальные комнаты
+	// 		);
+	// 	}
+	// });
 });
 
 app.get('/', (req, res) => {
