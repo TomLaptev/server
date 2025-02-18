@@ -40,6 +40,10 @@ io.on('connection', (socket) => {
 	//console.log(`Новое подключение: `, socket.id);
 
 	socket.on('playerJoin', (playerData) => {
+		console.log(
+			"'Зависшие' игроки:",
+			Object.keys(players) // Список игроков
+		);
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
 			if (!players[socket.id]) {
 				players[socket.id] = playerData;
