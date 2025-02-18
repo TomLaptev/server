@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 const PORT = process.env.PORT || 3000;
 let players = {}; // Храним данные игроков
 let rooms = {}; // Создание объекта для хранения комнат
-
+let newPlayer; 
 const PLAYER_TIMEOUT = 120000; // 2 минуты
 
 function removeInactivePlayers() {
@@ -37,7 +37,7 @@ function removeInactivePlayers() {
 setInterval(removeInactivePlayers, 300000);
 
 io.on('connection', (socket) => {
-	console.log(`Новое подключение: `, socket.id);
+	//console.log(`Новое подключение: `, socket.id);	
 
 	socket.on('playerJoin', (playerData) => {
 		if (playerData.id && playerData.name && playerData.rating !== undefined) {
@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
 		} else {
 			console.warn('Неполные данные игрока:', playerData);
 		}
+		newPlayer = playerData;
 		console.log('Присоединился игрок:', playerData.name, ': ', playerData.id);
 
 		// Отправляем только корректные данные
@@ -62,7 +63,9 @@ io.on('connection', (socket) => {
 
 	socket.on('playerExit', () => {
 		//console.log(`Игрок ${socket.id} вышел из игры`);
-		console.log(`Игрок ${players[socket.id].name} вышел из игры`);
+		//console.log(`Игрок ${players[socket.id].name} вышел из игры`);
+		console.log(`Игрок ${newPlayer.name} вышел из игры`);
+		
 		// if (rooms[socket.id]) {
 		// 	//io.to(roomId).emit('roomUpdate', rooms[roomId]);
 		// 	delete rooms[socket.id];
@@ -112,8 +115,8 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
-		console.log(`Игрок ${socket.id} отключился`);
-		//console.log(`Игрок ${players[socket.id].name} отключился`);
+		//console.log(`Игрок ${socket.id} отключился`);
+		console.log(`Игрок ${newPlayer.name} отключился`);
 
 		// Проверяем, был ли игрок в комнате
 		const roomId = Object.keys(rooms).find((id) =>
