@@ -214,7 +214,7 @@ io.on('connection', (socket) => {
 		console.log(`Обновление комнаты ${roomId} отправлено ${opponentId}`);
 	});
 
-	Отказ от игры
+	//Отказ от игры
 	socket.on('refusalPlay', ({opponentId, roomId }) => {
 		if (rooms[roomId]) {
 			io.to(opponentId).emit('roomDelete', { roomId });
