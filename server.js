@@ -214,20 +214,20 @@ io.on('connection', (socket) => {
 		console.log(`Обновление комнаты ${roomId} отправлено ${opponentId}`);
 	});
 
-	// Отказ от игры
-	// socket.on('refusalPlay', ({opponentId, roomId }) => {
-	// 	if (rooms[roomId]) {
-	// 		io.to(opponentId).emit('roomDelete', { roomId });
+	Отказ от игры
+	socket.on('refusalPlay', ({opponentId, roomId }) => {
+		if (rooms[roomId]) {
+			io.to(opponentId).emit('roomDelete', { roomId });
 
-	// 		console.log(`Приватная комната ${roomId} удалена`);
-	// 		delete rooms[roomId];
+			console.log(`Приватная комната ${roomId} удалена`);
+			delete rooms[roomId];
 
-	// 		console.log(
-	// 			"'Зависшие' комнаты:",
-	// 			Object.keys(rooms) // Теперь список покажет только актуальные комнаты
-	// 		);
-	// 	}
-	// });
+			console.log(
+				"'Зависшие' комнаты:",
+				Object.keys(rooms) // Теперь список покажет только актуальные комнаты
+			);
+		}
+	});
 });
 
 app.get('/', (req, res) => {
