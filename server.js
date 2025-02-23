@@ -93,8 +93,8 @@ io.on('connection', (socket) => {
 
 		// Удаляем игрока из списка
 		if (players[socket.id]) {
-			delete players[socket.id];
-			console.log(`Игрок ${socket.id} удалён из списка игроков`);
+			// delete players[socket.id];
+			// console.log(`Игрок ${socket.id} удалён из списка игроков`);
 
 			io.emit('updatePlayers', Object.values(players));
 			console.log('Контроль запроса на обновление');
