@@ -137,9 +137,9 @@ io.on('connection', (socket) => {
 			console.log('Контроль запроса на обновление');
 		}
 
-		for (const id in players) {
-			delete players[id];
-		}
+		// for (const id in players) {
+		// 	delete players[id];
+		// }
 	});
 
 	// Получение списка игроков
