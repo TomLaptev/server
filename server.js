@@ -37,7 +37,6 @@ function removeInactivePlayers() {
 setInterval(removeInactivePlayers, 300000);
 
 io.on('connection', (socket) => {
-	//console.log(`Новое подключение: `, socket.id);
 
 	socket.on('playerJoin', (playerData) => {
 		console.log(
@@ -66,19 +65,6 @@ io.on('connection', (socket) => {
 
 	socket.on('playerExit', () => {
 		console.log(`Игрок ${players[socket.id].name} вышел из игры`);
-		// if (rooms[socket.id]) {
-		// 	//io.to(roomId).emit('roomUpdate', rooms[roomId]);
-		// 	delete rooms[socket.id];
-		// 	console.log('Комната от игрока "', players[socket.id].name, ' "удалена');
-		// }
-		// console.log('Игрок "', players[socket.id].name, ' "удален');
-		// delete players[socket.id];
-
-		// io.emit('updatePlayers', Object.values(players)); // Обновляем список
-		// console.log(
-		// 	'В игре:',
-		// 	Object.values(players).map((player) => player.name)
-		// );
 
 		// Проверяем, был ли игрок в комнате
 		const roomId = Object.keys(rooms).find((id) =>
@@ -149,6 +135,10 @@ io.on('connection', (socket) => {
 
 			io.emit('updatePlayers', Object.values(players));
 			console.log('Контроль запроса на обновление');
+		}
+
+		for (const id in players) { 
+			delete players[id];
 		}
 	});
 
