@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('playerExit', () => {
-		//console.log(`Игрок ${players[socket.id].name} вышел из игры`);
+		console.log(`Игрок ${players[socket.id].name} вышел из игры`);
 
 		// Проверяем, был ли игрок в комнате
 		const roomId = Object.keys(rooms).find((id) =>
@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
 
 		// Удаляем игрока из списка
 		if (players[socket.id]) {
-			//delete players[socket.id];
+			delete players[socket.id];
 			console.log(`Игрок ${socket.id} удалён из списка игроков`);
 
 			io.emit('updatePlayers', Object.values(players));
@@ -137,9 +137,9 @@ io.on('connection', (socket) => {
 			console.log('Контроль запроса на обновление');
 		}
 
-		// for (const id in players) { 
-		// 	delete players[id];
-		// }
+		for (const id in players) {
+			delete players[id];
+		}
 	});
 
 	// Получение списка игроков
