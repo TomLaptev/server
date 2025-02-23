@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('playerExit', () => {
-		console.log(`Игрок ${players[socket.id].name} вышел из игры`);
+		//console.log(`Игрок ${players[socket.id].name} вышел из игры`);
 
 		// Проверяем, был ли игрок в комнате
 		const roomId = Object.keys(rooms).find((id) =>
