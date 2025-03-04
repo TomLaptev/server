@@ -205,7 +205,7 @@ io.on('connection', (socket) => {
 	});
 
 	//Отказ от игры
-	socket.on('this.scene.start("Start");', ({opponentId, roomId }) => {
+	socket.on('refusalPlay', ({opponentId, roomId }) => {
 		if (rooms[roomId]) {
 			io.to(opponentId).emit('roomDelete', { roomId });
 
