@@ -167,12 +167,13 @@ io.on('connection', (socket) => {
 		);
 	});
 
-	socket.on('updatePlayersStatus', ({ id, opponentSocketId, available }) => {
+	socket.on('updatePlayersStatus', ({ id, opponentSocketId, available, rating }) => {
 		if (players[opponentSocketId]) {
 			players[opponentSocketId].available = available;
 		}
 		if (players[id]) {
 			players[id].available = available;
+			players[id].rating = rating;
 		}
 	});
 
@@ -204,7 +205,7 @@ io.on('connection', (socket) => {
 	});
 
 	//Отказ от игры
-	socket.on('refusalPlay', ({opponentId, roomId }) => {
+	socket.on('this.scene.start("Start");', ({opponentId, roomId }) => {
 		if (rooms[roomId]) {
 			io.to(opponentId).emit('roomDelete', { roomId });
 
