@@ -13,10 +13,8 @@ RUN npm install
 # Копируем весь код внутрь контейнера
 COPY . .
 
-ENV PORT=3001
-
 # Открываем порт (Render сам подставит свой)
-EXPOSE 3001
+EXPOSE 10000
 
 # Запускаем сервер
 CMD ["node", "./server.js"]

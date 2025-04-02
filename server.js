@@ -15,17 +15,15 @@ const io = new Server(server, {
 app.use((req, res, next) => {
 	res.setHeader(
 		'Content-Security-Policy',
-		 /*"default-src 'self' https://tictactoe-server.onrender.com; " +
-			"script-src 'self' 'unsafe-inline' https://tictactoe-server.onrender.com; " +
-			"connect-src 'self' https://tictactoe-server.onrender.com ws://localhost:3000 wss://localhost:3000;" */
-     "default-src 'self' http://localhost:3001 https://tictactoe-server.onrender.com; " +
-		"script-src 'self' 'unsafe-inline' http://localhost:3001 https://tictactoe-server.onrender.com; " +
-		"connect-src 'self' http://localhost:3001 https://tictactoe-server.onrender.com ws://localhost:3001 wss://localhost:3001;" 
+		"default-src 'self' https://server-rqsj.onrender.com; " +
+			"script-src 'self' 'unsafe-inline' https://server-rqsj.onrender.com; " +
+			"connect-src 'self' https://server-rqsj.onrender.com ws://localhost:3000 wss://localhost:3000;" 
+     
 	);
 	next();
 });
 
-const PORT = process.env.PORT || /*3000*/ 3001 ;
+const PORT = process.env.PORT || 10000;
 let players = {}; // Храним данные игроков
 let rooms = {}; // Создание объекта для хранения комнат
 
