@@ -1,10 +1,13 @@
+const fs = require('fs');
+const http = require('http');
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const cors = require('cors');
 
 const app = express();
-const server = createServer(app);
+
+const server = http.createServer(app);
+
 const io = new Server(server, {
 	cors: {
 		origin: '*', // Разрешает соединение откуда угодно, можно ограничить
@@ -15,27 +18,16 @@ const io = new Server(server, {
 app.use((req, res, next) => {
 	res.setHeader(
 		'Content-Security-Policy',
-		"default-src 'self' https://server-rqsj.onrender.com; " +
-			"script-src 'self' 'unsafe-inline' https://server-rqsj.onrender.com; " +
-			"connect-src 'self' https://server-rqsj.onrender.com ws://localhost:3000 wss://localhost:3000;" 
-     
+		"default-src 'self'; " +
+		"script-src 'self' 'unsafe-inline'; " +
+		`connect-src 'self' http://77.95.201.171 ws://77.95.201.171:3000;`
 	);
-	next();
+  next();
 });
 
-const PORT = process.env.PORT || 10000;
+//const PORT = process.env.PORT || 3000;
 let players = {}; // Храним данные игроков
 let rooms = {}; // Создание объекта для хранения комнат
-
-const PLAYER_TIMEOUT = 120000; // 2 минуты
-
-function removeInactivePlayers() {
-	const now = Date.now();
-	console.log(now);
-}
-
-// Запускаем очистку каждые 300 секунд
-setInterval(removeInactivePlayers, 300000);
 
 io.on('connection', (socket) => {
 
@@ -193,7 +185,6 @@ io.on('connection', (socket) => {
 
 	// Обмен данными в комнате
 	socket.on('updatingRoomData', ({ roomId, opponentId, updatedData }) => {
-		// if (!rooms[roomId]) return;
 
 		// Обновляем только переданные параметры, сохраняя остальные
 		rooms[roomId] = { ...rooms[roomId], ...updatedData };
@@ -224,7 +215,7 @@ io.on('connection', (socket) => {
 app.get('/', (req, res) => {
 	res.send('Сервер работает!');
 });
-server.listen(PORT, () => {
-	console.log(`Сервер запущен на порту ${PORT}`);
+server.listen( 3000, () => {
+	console.log(`Сервер запущен на порту 3000`);
 });
-this.backButton;
+
