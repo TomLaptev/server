@@ -9,10 +9,32 @@ const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
-	cors: {
-		origin: '*', // Разрешает соединение откуда угодно, можно ограничить
-		methods: ['GET', 'POST'],
-	},
+  cors: {    
+    origin: [
+      'https://yandex.ru',
+      'https://ya.ru',
+      'https://yandex.com'
+    ],
+    methods: ['GET', 'POST']
+  }
+});
+
+// Защита от зацикливания на сервере
+io.on('connection', (socket) => {
+  console.log(`Новое подключение: ${socket.id}`);
+
+  socket.on('disconnect', (reason) => {
+    console.log(`Отключено: ${socket.id}, причина: ${reason}`);
+  });
+
+  socket.on('error', (err) => {
+    console.error(`Ошибка на сокете ${socket.id}:`, err);
+  });
+
+  // Пример безопасного обработчика
+  socket.on('ping', () => {
+    socket.emit('pong');
+  });
 });
 
 app.use((req, res, next) => {
